@@ -1,13 +1,6 @@
-import { LoginForm } from "./form";
-import Header from "@/components/header.component";
+import { LoginForm } from "@/components/forms.component";
+
 
 export default function LoginPage() {
-  return (
-    <>
-      <Header />
-
-            <LoginForm />
-
-    </>
-  );
+    return <LoginForm />;
 }

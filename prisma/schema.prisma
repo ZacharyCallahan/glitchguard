@@ -11,10 +11,29 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  name     String
-  email    String @unique
-  password String
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  guards    Guard[]
+}
+
+model Guard {
+  id        String   @id @default(uuid())
+  name      String
+  users     User[]
+  boards    Board[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Board {
+  id        String   @id @default(uuid())
+  name      String
+  guard     Guard    @relation(fields: [guardId], references: [id])
+  guardId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

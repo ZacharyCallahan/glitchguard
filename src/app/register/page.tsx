@@ -1,12 +1,5 @@
-import { RegisterForm } from "./form";
-import Header from "@/components/header.component";
+import { RegisterForm } from "@/components/forms.component";
 
 export default function RegisterPage() {
-  return (
-    <>
-      <Header />
-
-            <RegisterForm />
-    </>
-  );
+    return <RegisterForm />;
 }
