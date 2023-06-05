@@ -1,18 +1,24 @@
 type SectionProps = {
     title: string;
     content: string;
+    data?: any[];
 };
 
-export const Section = ({ title, content } : SectionProps) => {
+export const Section = ({ title, content, data }: SectionProps) => {
     return (
         <div>
             <div>
                 <h1>{title}</h1>
                 <p>{content}</p>
             </div>
-            <div className="h-10 w-20 bg-black"></div>
+            {data?.map((item, index) => {
+                return (
+                    <div key={index}>
+                        <h1>{item.title}</h1>
+                        <p>{item.content}</p>
+                    </div>
+                );
+            })}
         </div>
     );
 };
-
-

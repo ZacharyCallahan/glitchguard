@@ -21,7 +21,7 @@ model User {
 }
 
 model Guard {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   name      String
   users     User[]
   boards    Board[]
@@ -30,10 +30,10 @@ model Guard {
 }
 
 model Board {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   name      String
   guard     Guard    @relation(fields: [guardId], references: [id])
-  guardId   String
+  guardId   Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
