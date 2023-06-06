@@ -3,25 +3,38 @@ import Link from "next/link";
 type SectionProps = {
     title: string;
     content: string;
-    data?: any[];
+    guards?: Guard[];
+    guardsEnabled?: boolean;
 };
 
-export const Section = ({ title, content, data }: SectionProps) => {
-
-
+export const Section = ({
+    title,
+    content,
+    guards = [],
+    guardsEnabled = false,
+}: SectionProps) => {
     return (
         <div>
             <div>
                 <h1>{title}</h1>
                 <p>{content}</p>
             </div>
-            {data?.map((item, index) => {
-                return (
-                    <div key={index}>
-                        <Link href={`/guard/${item.id}`}>{item.name}</Link>
-                    </div>
-                );
-            })}
+
+            {guardsEnabled
+                ? guards.map(({ id, name }) => (
+                      <div key={id}>
+                          <Link href={`/guard/${id}`}>{name}</Link>
+                      </div>
+                  ))
+                : guards.flatMap(({ id, name, boards = [] }) =>
+                      boards.map(({ id: boardId, name: boardName }) => (
+                          <div key={boardId}>
+                              <Link href={`/guard/${id}/board/${boardId}`}>
+                                  {boardName}
+                              </Link>
+                          </div>
+                      ))
+                  )}
         </div>
     );
 };

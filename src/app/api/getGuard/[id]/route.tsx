@@ -1,10 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-    req: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, { params }: ParamsProp) {
     try {
         const id = parseInt(params.id);
 
@@ -17,7 +14,6 @@ export async function GET(
                 boards: true,
             },
         });
-        console.log(guard);
         return NextResponse.json(guard, { status: 200 });
     } catch (err) {
         return NextResponse.json(

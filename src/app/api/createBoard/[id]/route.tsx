@@ -7,10 +7,7 @@ type BoardProps = {
     name: string;
 };
 
-export async function POST(
-    req: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function POST(req: NextRequest, { params }: ParamsProp) {
     const id = params.id;
 
     const session = await getServerSession(authOptions);

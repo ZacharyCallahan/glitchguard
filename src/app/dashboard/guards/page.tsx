@@ -20,7 +20,8 @@ const page = async () => {
         <Section
             title="Your Guards"
             content="Here are all your Guards!"
-            data={guards}
+            guards={guards}
+            guardsEnabled={true}
         />
     );
 };

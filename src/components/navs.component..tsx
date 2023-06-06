@@ -47,10 +47,10 @@ export const DashboardNav = () => {
             </ul>
             <ul className="border-b-2  pb-3">
                 <li>
-                    <Link href={"/dashboard/boards"}>Your Boards</Link>
+                    <Link href={"/dashboard/guards"}>Your Guards</Link>
                 </li>
                 <li>
-                    <Link href={"/dashboard/guards"}>Guards</Link>
+                    <Link href={"/dashboard/boards"}>Your Boards</Link>
                 </li>
             </ul>
             <ul>

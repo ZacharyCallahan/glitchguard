@@ -28,7 +28,9 @@ const GuardNav = ({ guard }: GuardProps) => {
                     </div>
                     <ul className="pl-3">
                         {guard.boards?.map((board) => (
-                            <li key={board.id}>{board.name}</li>
+                            <li key={board.id}>
+                                <Link href={`/guard/${guard.id}/board/${board.id}`}> {board.name}</Link>
+                            </li>
                         ))}
                     </ul>
                 </li>
