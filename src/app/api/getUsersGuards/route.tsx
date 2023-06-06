@@ -14,7 +14,11 @@ export async function GET(req: NextRequest) {
                 email: userEmail,
             },
             include: {
-                guards: true,
+                guards: {
+                    include: {
+                        boards: true,
+                    },
+                }
             },
         });
 
