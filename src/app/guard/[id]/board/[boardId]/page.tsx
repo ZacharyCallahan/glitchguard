@@ -1,3 +1,4 @@
+import Board from "@/components/guard/Board";
 import axios from "axios";
 
 const page = async ({ params }: ParamsProp) => {
@@ -14,26 +15,12 @@ const page = async ({ params }: ParamsProp) => {
     const activeBoard = boards.filter(
         (board) => board.id === parseInt(boardId)
     );
+    
 
     return (
         <div>
             {activeBoard.map((board) => {
-                return (
-                    <div key={board.id}>
-                        <h2>{board.name}</h2>
-                        {board.lists?.map((list) => (
-                            <div key={list.id}>
-                                <h3>{list.name}</h3>
-                                {list.bugs.map((bug) => (
-                                    <div key={bug.id}>
-                                        <h4>{bug.name}</h4>
-                                        <p>{bug.description}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        ))}
-                    </div>
-                );
+                return <Board key={board.id} board={board} />;
             })}
         </div>
     );

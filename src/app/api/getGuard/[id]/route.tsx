@@ -11,7 +11,15 @@ export async function GET(req: NextRequest, { params }: ParamsProp) {
             },
             include: {
                 users: true,
-                boards: true,
+                boards: {
+                    include: {
+                        lists: {
+                            include: {
+                                bugs: true,
+                            },
+                        },
+                    },
+                },
             },
         });
         return NextResponse.json(guard, { status: 200 });

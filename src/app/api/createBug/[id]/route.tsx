@@ -5,28 +5,35 @@ export async function POST(req: NextRequest, { params }: ParamsProp) {
     const id = params.id;
 
     try {
-        const board = await prisma.board.findUnique({
+        const list = await prisma.list.findUnique({
             where: {
                 id: Number(id),
             },
         });
 
         const body = await req.text();
-        const list: List = JSON.parse(body);
+        const bug: Bug = JSON.parse(body);
 
-        if (!list.name) {
+        if (!bug.name) {
             return NextResponse.json(
-                { message: "Please provide a name for the list." },
+                { message: "Please provide a name for the bug." },
+                { status: 400 }
+            );
+        }
+        if (!bug.description) {
+            return NextResponse.json(
+                { message: "Please provide a description for the bug." },
                 { status: 400 }
             );
         }
 
-        const res = await prisma.list.create({
+        const res = await prisma.bug.create({
             data: {
-                name: list.name,
-                board: {
+                name: bug.name,
+                description: bug.description,
+                list: {
                     connect: {
-                        id: board?.id,
+                        id: list?.id,
                     },
                 },
             },
