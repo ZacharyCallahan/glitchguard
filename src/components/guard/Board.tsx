@@ -2,8 +2,6 @@ import { CreateListButton } from "../buttons.component";
 import List from "./List";
 
 const Board = ({ board }: { board: Board }) => {
-    console.log(board);
-    console.log("board");
 
     return (
         <div>

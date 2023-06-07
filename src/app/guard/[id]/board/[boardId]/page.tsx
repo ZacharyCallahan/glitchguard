@@ -6,7 +6,7 @@ const page = async ({ params }: ParamsProp) => {
     const boardId = params.boardId;
 
     const guard: Guard = await axios
-        .get(`${process.env.NEXTAUTH_URL}/api/getGuard/${id}`)
+        .get(`${process.env.NEXTAUTH_URL}/api/get/guard/${id}`)
         .then((res) => res.data)
         .catch((err) => console.log(err));
 

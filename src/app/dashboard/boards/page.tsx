@@ -7,7 +7,7 @@ const page = async () => {
     const session = await getServerSession(authOptions);
 
     const guards: Guard[] = await axios
-        .get(`${process.env.NEXTAUTH_URL}/api/getUsersGuards`, {
+        .get(`${process.env.NEXTAUTH_URL}/api/get/users/guard`, {
             params: {
                 session,
             },

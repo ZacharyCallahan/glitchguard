@@ -35,7 +35,7 @@ export const CreateGuardButton = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         axios
-            .post("/api/createGuard", { name })
+            .post("/api/guard/create", { name })
             .then((response) => router.refresh())
             .catch((error) => console.log(error));
     };
@@ -74,7 +74,7 @@ export const CreateBoardButton = ({ id }: { id: number }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         axios
-            .post(`/api/createBoard/${id}`, { name })
+            .post(`/api/guard/board/create/${id}`, { name })
             .then((response) => router.refresh())
             .catch((error) => console.log(error));
     };
@@ -114,7 +114,7 @@ export const CreateListButton = ({ id }: { id: number }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         axios
-            .post(`/api/createList/${id}`, { name })
+            .post(`/api/guard/board/list/create/${id}`, { name })
             .then((response) => router.refresh())
             .catch((error) => console.log(error));
     };
@@ -157,7 +157,7 @@ export const CreateBugButton = ({ id }: { id: number }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         axios
-            .post(`/api/createBug/${id}`, formData)
+            .post(`/api/guard/board/list/bug/create/${id}`, formData)
             .then((response) => router.refresh())
             .catch((error) => console.log(error));
     };
