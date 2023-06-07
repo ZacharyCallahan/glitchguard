@@ -28,6 +28,9 @@ type Guard = {
 type Board = {
     id: number;
     name: string;
+    lists: List[];
+    createdAt: String;
+    updatedAt: String;
 };
 
 type ParamsProp = {
@@ -35,4 +38,20 @@ type ParamsProp = {
         id: string;
         boardId: string;
     };
+};
+
+type List = {
+    id: number;
+    name: string;
+    bugs: Bug[];
+    createdAt: String;
+    updatedAt: String;
+};
+
+type Bug = {
+    id: number;
+    name: string;
+    description: string;
+    createdAt: String;
+    updatedAt: String;
 };

@@ -16,9 +16,13 @@ export async function GET(req: NextRequest) {
             include: {
                 guards: {
                     include: {
-                        boards: true,
+                        boards: {
+                            include: {
+                                List: true,
+                            },
+                        },
                     },
-                }
+                },
             },
         });
 

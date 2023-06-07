@@ -36,4 +36,25 @@ model Board {
   guardId   Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  List      List[]
+}
+
+model List {
+  id        Int      @id @default(autoincrement())
+  name      String
+  bugs      Bug[]
+  board     Board    @relation(fields: [boardId], references: [id])
+  boardId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Bug {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  list        List     @relation(fields: [listId], references: [id])
+  listId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

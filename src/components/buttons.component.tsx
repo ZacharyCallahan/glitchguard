@@ -101,3 +101,43 @@ export const CreateBoardButton = ({ id }: { id: number }) => {
         </>
     );
 };
+
+export const CreateListButton = ({ id }: { id: number }) => {
+    const [open, setOpen] = useState(false);
+    const [name, setName] = useState("");
+    const router = useRouter();
+
+    const handleClick = () => {
+        setOpen(!open);
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        axios
+            .post(`/api/createList/${id}`, { name })
+            .then((response) => router.refresh())
+            .catch((error) => console.log(error));
+    };
+    return (
+        <>
+            <button onClick={handleClick}>Create List</button>
+            {open && (
+                <PopupForm onClick={handleClick}>
+                    <form
+                        className="flex flex-col gap-4"
+                        onSubmit={handleSubmit}>
+                        <label htmlFor="name">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                        <button type="submit">Create</button>
+                    </form>
+                </PopupForm>
+            )}
+        </>
+    );
+};

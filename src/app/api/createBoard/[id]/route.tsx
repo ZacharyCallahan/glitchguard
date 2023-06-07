@@ -10,7 +10,7 @@ type BoardProps = {
 export async function POST(req: NextRequest, { params }: ParamsProp) {
     const id = params.id;
 
-    const session = await getServerSession(authOptions);
+    // const session = await getServerSession(authOptions);
 
     // const userEmail = session?.user?.email;
     // if (!userEmail) {
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest, { params }: ParamsProp) {
         return NextResponse.json(res, { status: 201 });
     } catch (err) {
         return NextResponse.json(
-            { message: "There was an error creating the guard.", err },
+            { message: "There was an error creating the board.", err },
             { status: 500 }
         );
     }
