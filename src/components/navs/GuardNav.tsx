@@ -3,7 +3,7 @@ import { CreateBoardButton, CreateGuardButton } from "../buttons";
 
 const GuardNav = ({ guard }: GuardProps) => {
     return (
-        <div className="w-1/4 border-2 border-black">
+        <div className="w-1/4 border-2 border-black p-6">
             <ul>
                 <li>
                     <h2>{guard.name}</h2>

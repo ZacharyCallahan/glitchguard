@@ -1,5 +1,5 @@
 import React from "react";
-import { CreateBugButton } from "../buttons";
+import { CreateBugButton, ListOptionsButton } from "../buttons";
 import Bug from "./Bug";
 
 type ListProps = {
@@ -8,9 +8,14 @@ type ListProps = {
 
 const List = ({ list, ...rest }: ListProps) => {
     return (
-        <div {...rest}>
-            <h3>{list.name}</h3>
-            <CreateBugButton id={list.id} />
+        <div className="border-2 border-black p-6 space-y-3" {...rest}>
+            <div className="border-b-2 border-black mb-3">
+                <div className="flex items-center justify-between">
+                    <h3>{list.name}</h3>
+                    <ListOptionsButton id={list.id} />
+                </div>
+                <CreateBugButton id={list.id} />
+            </div>
             {list.bugs.map((bug) => (
                 <Bug bug={bug} key={bug.id} />
             ))}

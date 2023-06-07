@@ -18,7 +18,7 @@ const page = async ({ params }: ParamsProp) => {
     
 
     return (
-        <div>
+        <div className="w-3/4">
             {activeBoard.map((board) => {
                 return <Board key={board.id} board={board} />;
             })}

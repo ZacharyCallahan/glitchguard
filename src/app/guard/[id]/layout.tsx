@@ -16,7 +16,7 @@ const layout = async ({ params, children }: layoutProps) => {
         .then((res) => res.data)
         .catch((err) => console.log(err));
     return (
-        <div className="flex items-center">
+        <div className="flex gap-12">
             <GuardNav guard={guard} />
             {children}
         </div>

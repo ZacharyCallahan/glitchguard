@@ -4,7 +4,7 @@ type BugProps = {
 
 const Bug = ({ bug, ...rest }: BugProps) => {
     return (
-        <div {...rest}>
+        <div className="border-black border-2 p-3" {...rest}>
             <h4>{bug.name}</h4>
             <p>{ bug.description}</p>
         </div>

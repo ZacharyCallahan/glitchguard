@@ -201,3 +201,37 @@ export const CreateBugButton = ({ id }: { id: number }) => {
         </>
     );
 };
+
+export const DeleteListButton = ({ id }: { id: number }) => {
+    const router = useRouter();
+
+    const handleClick = () => {
+        axios
+            .delete(`/api/guard/board/list/delete/${id}`)
+            .then((response) => router.refresh())
+            .catch((error) => console.log(error));
+    };
+
+    return <button onClick={handleClick}>Delete List</button>;
+};
+
+export const ListOptionsButton = ({ id }: { id: number }) => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <div>
+            {!open ? (
+                <button onClick={() => setOpen(!open)}>+</button>
+            ) : (
+                <button onClick={() => setOpen(!open)}>-</button>
+            )}
+
+            {open && (
+                <div className="absolute bg-slate-300 p-3 rounded-md flex flex-col items-start">
+                    <DeleteListButton id={id} />
+                    <button>Edit</button>
+                </div>
+            )}
+        </div>
+    );
+};
