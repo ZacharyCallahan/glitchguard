@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CreateGuardButton, LoginButton, LogoutButton } from "./buttons.component";
+import { CreateGuardButton, LoginButton, LogoutButton } from "./buttons";
 
 export const GlobalNav = () => {
     return (
@@ -20,7 +20,13 @@ export const GlobalNav = () => {
             </ul>
             <ul className="flex items-center gap-6">
                 <li>
-                    <input placeholder="Search" type="search" name="search" id="search" className="border-2 border-black" />
+                    <input
+                        placeholder="Search"
+                        type="search"
+                        name="search"
+                        id="search"
+                        className="border-2 border-black"
+                    />
                 </li>
                 <li>
                     <LoginButton />

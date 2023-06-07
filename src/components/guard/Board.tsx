@@ -1,8 +1,7 @@
-import { CreateListButton } from "../buttons.component";
+import { CreateListButton } from "../buttons";
 import List from "./List";
 
 const Board = ({ board }: { board: Board }) => {
-
     return (
         <div>
             <h2>{board.name}</h2>

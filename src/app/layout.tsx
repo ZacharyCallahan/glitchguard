@@ -1,10 +1,10 @@
-import { GlobalNav } from "@/components/navs.component.";
-import "./globals.css";
+import { Footer } from "@/components/footer";
+import { GlobalNav } from "@/components/navs";
 import { Rubik } from "next/font/google";
+import "./globals.css";
 import { NextAuthProvider } from "./providers";
-import { Footer } from "@/components/footer.component";
 
-const rubik = Rubik({subsets: ['cyrillic']})
+const rubik = Rubik({ subsets: ["cyrillic"] });
 
 export const metadata = {
     title: "Create Next App",

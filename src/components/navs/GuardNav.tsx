@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CreateBoardButton, CreateGuardButton } from "../buttons.component";
+import { CreateBoardButton, CreateGuardButton } from "../buttons";
 
 const GuardNav = ({ guard }: GuardProps) => {
     return (
@@ -29,7 +29,11 @@ const GuardNav = ({ guard }: GuardProps) => {
                     <ul className="pl-3">
                         {guard.boards?.map((board) => (
                             <li key={board.id}>
-                                <Link href={`/guard/${guard.id}/board/${board.id}`}> {board.name}</Link>
+                                <Link
+                                    href={`/guard/${guard.id}/board/${board.id}`}>
+                                    {" "}
+                                    {board.name}
+                                </Link>
                             </li>
                         ))}
                     </ul>

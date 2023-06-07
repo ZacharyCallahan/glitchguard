@@ -1,6 +1,6 @@
 import React from "react";
+import { CreateBugButton } from "../buttons";
 import Bug from "./Bug";
-import { CreateBugButton } from "../buttons.component";
 
 type ListProps = {
     list: List;

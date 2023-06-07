@@ -1,8 +1,8 @@
 "use client";
 import { signIn } from "next-auth/react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, MouseEventHandler, useState } from "react";
-import { LoginButton, RegisterButton } from "./buttons.component";
+import { LoginButton, RegisterButton } from "./buttons";
 
 type PopupFormProps = {
     children: React.ReactNode;
@@ -16,7 +16,6 @@ export const PopupForm = ({ children, onClick }: PopupFormProps) => {
                 <button
                     className="absolute top-2 right-2 text-gray-500"
                     onClick={onClick}>
-                    X
                     <i className={`fa fa-times`} />
                 </button>
             </div>
@@ -205,11 +204,15 @@ export const RegisterForm = () => {
 };
 
 export const HomeSignupForm = () => {
-
     return (
         <form action="" className="text-center">
-            <input type="email" name="email" id="email" className="border-black border-2" />
+            <input
+                type="email"
+                name="email"
+                id="email"
+                className="border-black border-2"
+            />
             <button type="submit">Sign Up</button>
         </form>
-    )
-}
+    );
+};

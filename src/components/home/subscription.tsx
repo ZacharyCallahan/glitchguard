@@ -1,4 +1,4 @@
-import { SubscriptionCard } from "../card.component";
+import { SubscriptionCard } from "../card";
 
 export const Subscription = () => {
     return (

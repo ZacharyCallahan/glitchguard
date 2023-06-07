@@ -1,11 +1,11 @@
 "use client";
 
+import axios from "axios";
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
-import { PopupForm } from "./forms.component";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { PopupForm } from "./forms";
 
 export const LoginButton = () => {
     return <button onClick={() => signIn()}>Login</button>;

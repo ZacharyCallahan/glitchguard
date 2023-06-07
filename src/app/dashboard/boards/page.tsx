@@ -1,4 +1,4 @@
-import { Section } from "@/components/dashboard/section.component";
+import { Section } from "@/components/dashboard/section";
 import { authOptions } from "@/lib/auth";
 import axios from "axios";
 import { getServerSession } from "next-auth";
