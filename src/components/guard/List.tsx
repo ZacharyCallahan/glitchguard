@@ -4,9 +4,11 @@ import Bug from "./Bug";
 
 type ListProps = {
     list: List;
+    boardId: number;
+    guardId: number;
 };
 
-const List = ({ list, ...rest }: ListProps) => {
+const List = ({ list, boardId, guardId, ...rest }: ListProps) => {
     return (
         <div className="border-2 border-black p-6 space-y-3" {...rest}>
             <div className="border-b-2 border-black mb-3">
@@ -14,7 +16,11 @@ const List = ({ list, ...rest }: ListProps) => {
                     <h3>{list.name}</h3>
                     <ListOptionsButton id={list.id} />
                 </div>
-                <CreateBugButton id={list.id} />
+                <CreateBugButton
+                    guardId={guardId}
+                    boardId={boardId}
+                    listId={list.id}
+                />
             </div>
             {list.bugs.map((bug) => (
                 <Bug bug={bug} key={bug.id} />

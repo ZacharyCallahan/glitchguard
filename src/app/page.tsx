@@ -1,8 +1,9 @@
-import { HomeSignupForm } from "@/components/forms";
-import { Slider } from "@/components/home/slider";
-import { Slogan } from "@/components/home/slogan";
-import { Subscription } from "@/components/home/subscription";
-import { Teaser } from "@/components/home/teaser";
+import { HomeSignupForm } from "../components/forms";
+import { Slider } from "../components/home/slider";
+import { Slogan } from "../components/home/slogan";
+import { Subscription } from "../components/home/subscription";
+import { Teaser } from "../components/home/teaser";
+
 
 export default async function Home() {
     return (

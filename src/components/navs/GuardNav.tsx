@@ -1,7 +1,15 @@
+"use client";
 import Link from "next/link";
-import { CreateBoardButton, CreateGuardButton } from "../buttons";
+import { CreateBoardButton } from "../buttons";
+import { useAppSelector } from "../../redux/store";
 
-const GuardNav = ({ guard }: GuardProps) => {
+const GuardNav = ({ id }: { id: number }) => {
+    const guard = useAppSelector((state) =>
+        state.guardReducer.value.guards.find((guard) => guard.id === id)
+    );
+
+    console.log(guard);
+
     return (
         <div className="w-1/4 border-2 border-black p-6">
             <ul>
@@ -27,15 +35,15 @@ const GuardNav = ({ guard }: GuardProps) => {
                         <CreateBoardButton id={guard.id} />
                     </div>
                     <ul className="pl-3">
-                        {guard.boards?.map((board) => (
-                            <li key={board.id}>
-                                <Link
-                                    href={`/guard/${guard.id}/board/${board.id}`}>
-                                    {" "}
-                                    {board.name}
-                                </Link>
-                            </li>
-                        ))}
+                        {
+                            guard.boards.map((board) => (
+                                <li key={board?.id}>
+                                    <Link
+                                        href={`/guard/${guard.id}/board/${board?.id}`}>
+                                        {board?.name}
+                                    </Link>
+                                </li>
+                            ))}
                     </ul>
                 </li>
             </ul>

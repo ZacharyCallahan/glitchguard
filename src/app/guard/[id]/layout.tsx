@@ -1,6 +1,5 @@
-import GuardNav from "@/components/navs/GuardNav";
-import axios from "axios";
 import React from "react";
+import GuardNav from "../../../components/navs/GuardNav";
 
 type layoutProps = {
     params: {
@@ -10,14 +9,11 @@ type layoutProps = {
 };
 
 const layout = async ({ params, children }: layoutProps) => {
-    const id = params.id;
-    const guard: Guard = await axios
-        .get(`${process.env.NEXTAUTH_URL}/api/get/guard/${id}`)
-        .then((res) => res.data)
-        .catch((err) => console.log(err));
+    const id = parseInt(params.id);
+
     return (
         <div className="flex gap-12">
-            <GuardNav guard={guard} />
+            <GuardNav id={id} />
             {children}
         </div>
     );

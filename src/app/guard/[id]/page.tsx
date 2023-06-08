@@ -1,17 +1,13 @@
-import { authOptions } from "@/lib/auth";
-import axios from "axios";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
+"use client";
+import { useAppSelector } from "../../../redux/store";
 
-const page = async ({ params }: ParamsProp) => {
-    const id = params.id;
-
-    const guard: Guard = await axios
-        .get(`${process.env.NEXTAUTH_URL}/api/get/guard/${id}`)
-        .then((res) => res.data)
-        .catch((err) => console.log(err));
+const Page = async ({ params }: ParamsProp) => {
+    const id = parseInt(params.id);
+    const guard = useAppSelector((state) =>
+        state.guardReducer.value.guards.find((guard) => guard.id === id)
+    );
 
     return <div>{<h2>{guard.name}</h2>}</div>;
 };
 
-export default page;
+export default Page;

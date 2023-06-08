@@ -1,29 +1,28 @@
-import Board from "@/components/guard/Board";
-import axios from "axios";
+"use client";
+import BoardDisplay from "../../../../../components/guard/BoardDisplay";
+import { useAppSelector } from "../../../../../redux/store";
 
-const page = async ({ params }: ParamsProp) => {
-    const id = params.id;
+const Page = async ({ params }: ParamsProp) => {
+    const id =  parseInt(params.id);
     const boardId = params.boardId;
 
-    const guard: Guard = await axios
-        .get(`${process.env.NEXTAUTH_URL}/api/get/guard/${id}`)
-        .then((res) => res.data)
-        .catch((err) => console.log(err));
+    const guards = useAppSelector((state) => state.guardReducer.value.guards);
+
+    const guard = guards.find((guard) => guard.id === id);
 
     const boards: Board[] = guard.boards;
-
+    console.log(boards);
     const activeBoard = boards.filter(
-        (board) => board.id === parseInt(boardId)
+        (board) => board?.id === parseInt(boardId)
     );
-    
 
     return (
         <div className="w-3/4">
             {activeBoard.map((board) => {
-                return <Board key={board.id} board={board} />;
+                return <BoardDisplay key={board?.id} board={board} guardId={id} />;
             })}
         </div>
     );
 };
 
-export default page;
+export default Page;

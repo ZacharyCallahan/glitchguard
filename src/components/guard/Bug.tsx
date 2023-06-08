@@ -1,3 +1,4 @@
+
 type BugProps = {
     bug: Bug;
 }

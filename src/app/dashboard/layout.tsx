@@ -1,4 +1,4 @@
-import { DashboardNav } from "@/components/navs";
+import { DashboardNav } from "../../components/navs";
 
 const dashboardlayout = ({ children }: { children: React.ReactNode }) => {
     return (

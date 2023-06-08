@@ -1,0 +1,12 @@
+Github link - https://github.com/ZacharyCallahan/glitchguard
+
+Description:
+
+This project is going to be a Bug tracker for Applications that users are building. 
+They can make "Guards" for each application. Then proceed to make a list for whatever they want (features, bugs, ideas, etc). 
+Then they can add a list of task that need to be done for those list. The users will also be able to add other users to their guards,
+so they can collaborate.
+
+Also wordage will be changed in majority of the website. I have yet to come up with something intriguing.
+
+The wireframe include addition notes of certain features!

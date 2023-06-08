@@ -1,11 +1,19 @@
 "use client";
-
 import axios from "axios";
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { PopupForm } from "./forms";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
+import {
+    addBoard,
+    addBug,
+    addGuard,
+    addList,
+    deleteList,
+} from "../redux/features/guard-slice";
 
 export const LoginButton = () => {
     return <button onClick={() => signIn()}>Login</button>;
@@ -27,6 +35,7 @@ export const CreateGuardButton = () => {
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
     const router = useRouter();
+    const dispath = useDispatch<AppDispatch>();
 
     const handleClick = () => {
         setOpen(!open);
@@ -36,7 +45,7 @@ export const CreateGuardButton = () => {
         e.preventDefault();
         axios
             .post("/api/guard/create", { name })
-            .then((response) => router.refresh())
+            .then((response) => dispath(addGuard(response.data)))
             .catch((error) => console.log(error));
     };
     return (
@@ -65,6 +74,7 @@ export const CreateGuardButton = () => {
 export const CreateBoardButton = ({ id }: { id: number }) => {
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
+    const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
 
     const handleClick = () => {
@@ -75,7 +85,10 @@ export const CreateBoardButton = ({ id }: { id: number }) => {
         e.preventDefault();
         axios
             .post(`/api/guard/board/create/${id}`, { name })
-            .then((response) => router.refresh())
+            .then((response) => {
+                console.log(response.data);
+                dispatch(addBoard(response.data));
+            })
             .catch((error) => console.log(error));
     };
     return (
@@ -102,9 +115,16 @@ export const CreateBoardButton = ({ id }: { id: number }) => {
     );
 };
 
-export const CreateListButton = ({ id }: { id: number }) => {
+export const CreateListButton = ({
+    boardId,
+    guardId,
+}: {
+    boardId: number;
+    guardId: number;
+}) => {
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
+    const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
 
     const handleClick = () => {
@@ -114,8 +134,12 @@ export const CreateListButton = ({ id }: { id: number }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         axios
-            .post(`/api/guard/board/list/create/${id}`, { name })
-            .then((response) => router.refresh())
+            .post(`/api/guard/board/list/create/${boardId}`, { name })
+            .then((response) => {
+                console.log(response.data);
+                const payload = { ...response.data, guardId };
+                dispatch(addList(payload));
+            })
             .catch((error) => console.log(error));
     };
     return (
@@ -142,8 +166,17 @@ export const CreateListButton = ({ id }: { id: number }) => {
     );
 };
 
-export const CreateBugButton = ({ id }: { id: number }) => {
+export const CreateBugButton = ({
+    guardId,
+    boardId,
+    listId,
+}: {
+    guardId: number;
+    boardId: number;
+    listId: number;
+}) => {
     const [open, setOpen] = useState(false);
+    const dispatch = useDispatch<AppDispatch>();
     const [formData, setFormData] = useState({
         name: "",
         description: "",
@@ -157,8 +190,11 @@ export const CreateBugButton = ({ id }: { id: number }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         axios
-            .post(`/api/guard/board/list/bug/create/${id}`, formData)
-            .then((response) => router.refresh())
+            .post(`/api/guard/board/list/bug/create/${listId}`, formData)
+            .then((response) => {
+                const payload = { ...response.data, guardId, boardId, listId };
+                dispatch(addBug(payload));
+            })
             .catch((error) => console.log(error));
     };
     return (
@@ -204,11 +240,13 @@ export const CreateBugButton = ({ id }: { id: number }) => {
 
 export const DeleteListButton = ({ id }: { id: number }) => {
     const router = useRouter();
-
+    const dispatch = useDispatch<AppDispatch>();
     const handleClick = () => {
         axios
             .delete(`/api/guard/board/list/delete/${id}`)
-            .then((response) => router.refresh())
+            .then((response) => {
+                dispatch(deleteList(response.data));
+            })
             .catch((error) => console.log(error));
     };
 

@@ -1,9 +1,10 @@
-import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "../../../../../lib/prisma";
 
 export async function GET(req: NextRequest) {
-    const url = new URL(req.url);
-    const userEmail = url.searchParams.get("session[user][email]");
+    const url = new URL(req.nextUrl.toString());
+    const userEmail = url.searchParams.get("email");
+    console.log(userEmail);
 
     if (!userEmail)
         return NextResponse.json({ message: "No user email" }, { status: 400 });
@@ -13,10 +14,20 @@ export async function GET(req: NextRequest) {
             where: {
                 email: userEmail,
             },
+            
             include: {
                 guards: {
                     include: {
-                        boards: true,
+                        users: true,
+                        boards: {
+                            include: {
+                                lists: {
+                                    include: {
+                                        bugs: true,
+                                    },
+                                },
+                            },
+                        },
                     },
                 },
             },

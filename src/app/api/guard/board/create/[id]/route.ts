@@ -1,7 +1,5 @@
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "../../../../../../lib/prisma";
 
 type BoardProps = {
     name: string;
@@ -10,23 +8,7 @@ type BoardProps = {
 export async function POST(req: NextRequest, { params }: ParamsProp) {
     const id = params.id;
 
-    // const session = await getServerSession(authOptions);
-
-    // const userEmail = session?.user?.email;
-    // if (!userEmail) {
-    //     return NextResponse.json({
-    //         authenticated: !!session,
-    //         session,
-    //     });
-    // }
-
     try {
-        // const user = await prisma.user.findUnique({
-        //     where: {
-        //         email: userEmail,
-        //     },
-        // });
-
         const guard = await prisma.guard.findUnique({
             where: {
                 id: parseInt(id),

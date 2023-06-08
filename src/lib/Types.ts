@@ -8,8 +8,42 @@ type GuardProps = {
         updatedAt: String;
     };
 };
-type User = {
+type BoardPayload = {
+    guardId: number;
     id: number;
+    name: string;
+    updatedAt: String;
+    createdAt: String;
+};
+type ListPayload = {
+    guardId: number;
+    boardId: number;
+    id: number;
+    name: string;
+    updatedAt: String;
+    createdAt: String;
+};
+type TempListPayloadForDelete = {
+    resList: {
+        id: number;
+        board: {
+            id: number;
+            guardId: number;
+        };
+    };
+};
+type BugPayload = {
+    guardId: number;
+    boardId: number;
+    listId: number;
+    id: number;
+    name: string;
+    description: string;
+    updatedAt: String;
+    createdAt: String;
+};
+type User = {
+    id: string;
     name: string;
     email: string;
     createdAt: String;

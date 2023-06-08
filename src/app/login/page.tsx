@@ -1,5 +1,6 @@
-import { LoginForm } from "@/components/forms";
+import { LoginForm } from "../../components/forms";
 
-export default function LoginPage() {
-    return <LoginForm />;
+export default async function LoginPage() {
+
+    return <LoginForm  />;
 }

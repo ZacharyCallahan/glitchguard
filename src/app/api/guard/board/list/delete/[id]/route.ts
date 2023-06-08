@@ -1,5 +1,5 @@
-import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "../../../../../../../lib/prisma";
 
 export async function DELETE(req: NextRequest, { params }: ParamsProp) {
     const id = params.id;
@@ -13,6 +13,13 @@ export async function DELETE(req: NextRequest, { params }: ParamsProp) {
         const resList = await prisma.list.delete({
             where: {
                 id: Number(id),
+            },
+            include: {
+                board: {
+                    include: {
+                        guard: true,
+                    },
+                },
             },
         });
 

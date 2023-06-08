@@ -4,6 +4,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, MouseEventHandler, useState } from "react";
 import { LoginButton, RegisterButton } from "./buttons";
 
+import { useDispatch } from "react-redux";
+
+
+import axios from "axios";
+import { AppDispatch } from "../redux/store";
+import { setGuards } from "../redux/features/guard-slice";
+
 type PopupFormProps = {
     children: React.ReactNode;
     onClick: MouseEventHandler<HTMLButtonElement>;
@@ -25,6 +32,7 @@ export const PopupForm = ({ children, onClick }: PopupFormProps) => {
 
 export const LoginForm = () => {
     const router = useRouter();
+    const dispatch = useDispatch<AppDispatch>();
     const [loading, setLoading] = useState(false);
     const [formValues, setFormValues] = useState({
         email: "",
@@ -37,6 +45,7 @@ export const LoginForm = () => {
 
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
         try {
             setLoading(true);
             setFormValues({ email: "", password: "" });
@@ -51,6 +60,17 @@ export const LoginForm = () => {
             setLoading(false);
 
             if (!res?.error) {
+                await axios
+                    .get(`/api/get/users/guard`, {
+                        params: {
+                            email: formValues.email,
+                        },
+                    })
+                    .then((res) => {
+                        const guards: Guard[] = res.data;
+                        console.log(guards);
+                        dispatch(setGuards(guards));
+                    });
                 router.push(callbackUrl);
             } else {
                 setError("invalid email or password");

@@ -1,8 +1,12 @@
-import { Footer } from "@/components/footer";
-import { GlobalNav } from "@/components/navs";
+
 import { Rubik } from "next/font/google";
 import "./globals.css";
 import { NextAuthProvider } from "./providers";
+import ReduxProvider from "../redux/provider";
+import { GlobalNav } from "../components/navs";
+import { Footer } from "../components/footer";
+
+
 
 const rubik = Rubik({ subsets: ["cyrillic"] });
 
@@ -11,11 +15,12 @@ export const metadata = {
     description: "Create Next App with TypeScript",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+
     return (
         <html lang="en">
             <head>
@@ -26,9 +31,11 @@ export default function RootLayout({
             </head>
             <body className={`${rubik.className}`}>
                 <NextAuthProvider>
-                    <GlobalNav />
-                    {children}
-                    <Footer />
+                    <ReduxProvider>
+                        <GlobalNav />
+                        {children}
+                        <Footer />
+                    </ReduxProvider>
                 </NextAuthProvider>
             </body>
         </html>
