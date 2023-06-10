@@ -11,7 +11,6 @@ const Page = ({ params }: ParamsProp) => {
     const guard = guards.find((guard) => guard.id === id);
 
     const boards: Board[] = guard.boards;
-    console.log(boards);
     const activeBoard = boards.filter(
         (board) => board?.id === parseInt(boardId)
     );

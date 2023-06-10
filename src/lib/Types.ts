@@ -23,6 +23,16 @@ type ListPayload = {
     updatedAt: String;
     createdAt: String;
 };
+
+type TempGuardPayloadForDelete = {
+    guardId: number;
+}
+
+type TempBoardPayloadForDelete = {
+    guardId: number;
+    boardId: number;
+};
+
 type TempListPayloadForDelete = {
     resList: {
         id: number;
@@ -32,6 +42,13 @@ type TempListPayloadForDelete = {
         };
     };
 };
+type TempBugPayloadForDelete = {
+    guardId: number;
+    boardId: number;
+    listId: number;
+    bugId: number;
+};
+
 type BugPayload = {
     guardId: number;
     boardId: number;

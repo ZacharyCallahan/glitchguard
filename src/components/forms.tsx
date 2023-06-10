@@ -68,7 +68,6 @@ export const LoginForm = () => {
                     })
                     .then((res) => {
                         const guards: Guard[] = res.data;
-                        console.log(guards);
                         dispatch(setGuards(guards));
                     });
                 router.push(callbackUrl);

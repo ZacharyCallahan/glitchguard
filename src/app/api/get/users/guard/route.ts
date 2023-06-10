@@ -4,7 +4,6 @@ import { prisma } from "../../../../../lib/prisma";
 export async function GET(req: NextRequest) {
     const url = new URL(req.nextUrl.toString());
     const userEmail = url.searchParams.get("email");
-    console.log(userEmail);
 
     if (!userEmail)
         return NextResponse.json({ message: "No user email" }, { status: 400 });

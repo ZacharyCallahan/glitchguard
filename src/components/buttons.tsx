@@ -2,7 +2,7 @@
 import axios from "axios";
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
-
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { PopupForm } from "./forms";
 import { useDispatch } from "react-redux";
@@ -12,6 +12,9 @@ import {
     addBug,
     addGuard,
     addList,
+    deleteBoard,
+    deleteBug,
+    deleteGuard,
     deleteList,
 } from "../redux/features/guard-slice";
 
@@ -55,16 +58,11 @@ export const CreateGuardButton = () => {
                 setLoading(false);
             });
         setOpen(false);
-        
     };
     return (
         <>
             <button onClick={handleClick}>Create Guard</button>
-            {
-                loading && (
-                    <div>Loading...</div>
-                )
-            }
+            {loading && <div>Loading...</div>}
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -108,7 +106,6 @@ export const CreateBoardButton = ({ id }: { id: number }) => {
                 setLoading(false);
             });
         setOpen(false);
-        
     };
     return (
         <>
@@ -166,7 +163,6 @@ export const CreateListButton = ({
                 setLoading(false);
             });
         setOpen(false);
-        
     };
     return (
         <>
@@ -226,7 +222,6 @@ export const CreateBugButton = ({
             })
             .catch((error) => console.log(error));
         setOpen(false);
-        
     };
     return (
         <>
@@ -270,6 +265,63 @@ export const CreateBugButton = ({
     );
 };
 
+export const DeleteGuardButton = ({ id }: { id: number }) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+    const pathname = usePathname();
+
+    const handleClick = () => {
+        setLoading(true);
+
+        axios
+            .delete(`/api/guard/delete/${id}`)
+            .then((response) => {
+                setLoading(false);
+                console.log(response.data);
+                dispatch(deleteGuard(response.data));
+                //check if we are on the guard page
+                if (pathname.includes(`/guard/${id}`)) router.push("/");
+            })
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+            });
+    };
+
+    return (
+        <button onClick={handleClick}>
+            Delete Guard {loading && <p>Deleting...</p>}
+        </button>
+    );
+};
+
+export const DeleteBoardButton = ({ id }: { id: number }) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const [loading, setLoading] = useState(false);
+
+    const handleClick = () => {
+        setLoading(true);
+
+        axios
+            .delete(`/api/guard/board/delete/${id}`)
+            .then((response) => {
+                setLoading(false);
+                dispatch(deleteBoard(response.data));
+            })
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+            });
+    };
+
+    return (
+        <button onClick={handleClick}>
+            Delete Board {loading && <p>Deleting...</p>}
+        </button>
+    );
+};
+
 export const DeleteListButton = ({ id }: { id: number }) => {
     const dispatch = useDispatch<AppDispatch>();
     const [loading, setLoading] = useState(false);
@@ -292,6 +344,32 @@ export const DeleteListButton = ({ id }: { id: number }) => {
     return (
         <button onClick={handleClick}>
             Delete List {loading && <p>Deleting...</p>}
+        </button>
+    );
+};
+
+export const DeleteBugButton = ({ id }: { id: number }) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const [loading, setLoading] = useState(false);
+
+    const handleClick = () => {
+        setLoading(true);
+
+        axios
+            .delete(`/api/guard/board/list/bug/delete/${id}`)
+            .then((response) => {
+                setLoading(false);
+                dispatch(deleteBug(response.data));
+            })
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+            });
+    };
+
+    return (
+        <button onClick={handleClick}>
+            Delete Bug {loading && <p>Deleting...</p>}
         </button>
     );
 };

@@ -1,6 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { useSelector, TypedUseSelectorHook } from "react-redux";
-import authReducer from "./features/auth-slice";
 import guardReducer from "./features/guard-slice";
 import storageSession from "redux-persist/lib/storage/session";
 import { persistReducer, persistStore } from "redux-persist";
@@ -12,7 +11,6 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-    authReducer,
     guardReducer,
 });
 

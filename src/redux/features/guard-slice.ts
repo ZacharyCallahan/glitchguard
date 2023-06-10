@@ -28,6 +28,7 @@ export const guard = createSlice({
     initialState,
     reducers: {
         setGuards: (state, action: PayloadAction<Guard[]>) => {
+            // Set the guards in the state to the guards that were passed in
             return {
                 value: {
                     guards: action.payload,
@@ -35,13 +36,16 @@ export const guard = createSlice({
             };
         },
         addGuard: (state, action: PayloadAction<Guard>) => {
-            console.log(action.payload);
+            // Add the guard to the state
             state.value.guards.push(action.payload);
         },
         addBoard: (state, action: PayloadAction<BoardPayload>) => {
+            // Find the guard with the id that matches the board's guardId
             const guard = state.value.guards.find(
                 (guard) => guard.id === action.payload.guardId
             );
+
+            // If the guard exists, add the board to the guard's boards array
             if (guard) {
                 guard.boards.push({
                     id: action.payload.id,
@@ -52,10 +56,19 @@ export const guard = createSlice({
                 });
             }
         },
+        // Add a list to a board
         addList: (state, action: PayloadAction<ListPayload>) => {
-            const board = state.value.guards
-                .find((guard) => guard.id === action.payload.guardId)
-                ?.boards.find((board) => board.id === action.payload.boardId);
+            // Find the guard the list belongs to
+            const guard = state.value.guards.find(
+                (guard) => guard.id === action.payload.guardId
+            );
+
+            // Find the board the list belongs to
+            const board = guard.boards.find(
+                (board) => board.id === action.payload.boardId
+            );
+
+            // If the board exists, add the list to the board
             if (board) {
                 board.lists.push({
                     id: action.payload.id,
@@ -66,21 +79,56 @@ export const guard = createSlice({
                 });
             }
         },
+
         addBug: (state, action: PayloadAction<BugPayload>) => {
-            const list = state.value.guards
-                .find((guard) => guard.id === action.payload.guardId)
-                ?.boards.find((board) => board.id === action.payload.boardId)
-                ?.lists.find((list) => list.id === action.payload.listId);
-            console.log(list);
-            console.log(action.payload);
-            if (list) {
-                list.bugs.push({
-                    id: action.payload.id,
-                    name: action.payload.name,
-                    description: action.payload.description,
-                    createdAt: action.payload.createdAt,
-                    updatedAt: action.payload.updatedAt,
-                });
+            // Find the list to which the bug is being added
+            const guard = state.value.guards.find(
+                (guard) => guard.id === action.payload.guardId
+            );
+            // Find the board to which the bug is being added
+            const board = guard.boards.find(
+                (board) => board.id === action.payload.boardId
+            );
+            // Find the list to which the bug is being added
+            const list = board.lists.find(
+                (list) => list.id === action.payload.listId
+            );
+
+            // Add the bug to the list
+            list.bugs.push({
+                id: action.payload.id,
+                name: action.payload.name,
+                description: action.payload.description,
+                createdAt: action.payload.createdAt,
+                updatedAt: action.payload.updatedAt,
+            });
+        },
+        deleteGuard: (
+            state,
+            action: PayloadAction<TempGuardPayloadForDelete>
+        ) => {
+            // Delete the guard that was passed in from the state
+            state.value.guards = state.value.guards.filter(
+                (guard) => guard.id !== action.payload.guardId
+            );
+        },
+
+        deleteBoard: (
+            state,
+            action: PayloadAction<TempBoardPayloadForDelete>
+        ) => {
+            // Find the guard in the state that matches the guard that was
+            // passed in.
+            const guard = state.value.guards.find(
+                (guard) => guard.id === action.payload.guardId
+            );
+
+            // If the guard was found, delete the board that was passed in
+            // from the guard.
+            if (guard) {
+                guard.boards = guard.boards.filter(
+                    (board) => board.id !== action.payload.boardId
+                );
             }
         },
 
@@ -88,16 +136,38 @@ export const guard = createSlice({
             state,
             action: PayloadAction<TempListPayloadForDelete>
         ) => {
-            const board = state.value.guards
-                .find(
-                    (guard) => guard.id === action.payload.resList.board.guardId
-                )
-                ?.boards.find(
-                    (board) => board.id === action.payload.resList.board.id
-                );
+            // Find the board that matches the board that was passed in.
+            const guard = state.value.guards.find(
+                (guard) => guard.id === action.payload.resList.board.guardId
+            );
+            const board = guard?.boards.find(
+                (board) => board.id === action.payload.resList.board.id
+            );
+            // If the board was found, delete the list that was passed in
             if (board) {
                 board.lists = board.lists.filter(
                     (list) => list.id !== action.payload.resList.id
+                );
+            }
+        },
+
+        deleteBug: (state, action: PayloadAction<TempBugPayloadForDelete>) => {
+            // Find the list that matches the list that was passed in.
+            const guard = state.value.guards.find(
+                (guard) => guard.id === action.payload.guardId
+            );
+            // Find the board that matches the board that was passed in.
+            const board = guard?.boards.find(
+                (board) => board.id === action.payload.boardId
+            );
+            // Find the list that matches the list that was passed in.
+            const list = board?.lists.find(
+                (list) => list.id === action.payload.listId
+            );
+            // If the list was found, delete the bug that was passed in
+            if (list) {
+                list.bugs = list.bugs.filter(
+                    (bug) => bug.id !== action.payload.bugId
                 );
             }
         },
@@ -115,6 +185,9 @@ export const {
     addBoard,
     addList,
     addBug,
+    deleteGuard,
+    deleteBoard,
     deleteList,
+    deleteBug,
 } = guard.actions;
 export default guard.reducer;
