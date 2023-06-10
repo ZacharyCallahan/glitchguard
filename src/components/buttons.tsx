@@ -2,7 +2,7 @@
 import axios from "axios";
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 import { PopupForm } from "./forms";
 import { useDispatch } from "react-redux";
@@ -34,7 +34,7 @@ export const ProfileButton = () => {
 export const CreateGuardButton = () => {
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
-    const router = useRouter();
+
     const dispath = useDispatch<AppDispatch>();
 
     const handleClick = () => {
@@ -45,7 +45,9 @@ export const CreateGuardButton = () => {
         e.preventDefault();
         axios
             .post("/api/guard/create", { name })
-            .then((response) => dispath(addGuard(response.data)))
+            .then((response) => {
+                dispath(addGuard(response.data));
+            })
             .catch((error) => console.log(error));
     };
     return (
@@ -75,7 +77,6 @@ export const CreateBoardButton = ({ id }: { id: number }) => {
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
     const dispatch = useDispatch<AppDispatch>();
-    const router = useRouter();
 
     const handleClick = () => {
         setOpen(!open);
@@ -125,7 +126,6 @@ export const CreateListButton = ({
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
     const dispatch = useDispatch<AppDispatch>();
-    const router = useRouter();
 
     const handleClick = () => {
         setOpen(!open);
@@ -181,7 +181,6 @@ export const CreateBugButton = ({
         name: "",
         description: "",
     });
-    const router = useRouter();
 
     const handleClick = () => {
         setOpen(!open);
@@ -239,7 +238,6 @@ export const CreateBugButton = ({
 };
 
 export const DeleteListButton = ({ id }: { id: number }) => {
-    const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const handleClick = () => {
         axios

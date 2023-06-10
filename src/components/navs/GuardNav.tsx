@@ -4,11 +4,12 @@ import { CreateBoardButton } from "../buttons";
 import { useAppSelector } from "../../redux/store";
 
 const GuardNav = ({ id }: { id: number }) => {
-    const guard = useAppSelector((state) =>
+    const guard: Guard = useAppSelector((state) =>
         state.guardReducer.value.guards.find((guard) => guard.id === id)
     );
 
-    console.log(guard);
+    
+
 
     return (
         <div className="w-1/4 border-2 border-black p-6">
@@ -25,7 +26,7 @@ const GuardNav = ({ id }: { id: number }) => {
                     <h3>Users</h3>
                     <ul className="pl-3">
                         {guard.users.map((user) => (
-                            <li key={user.id}>{user.name}</li>
+                            <li key={user?.id}>{user?.name}</li>
                         ))}
                     </ul>
                 </li>

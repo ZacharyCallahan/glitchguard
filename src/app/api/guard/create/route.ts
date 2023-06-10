@@ -1,4 +1,3 @@
-
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../../../lib/auth";
@@ -45,8 +44,24 @@ export async function POST(req: NextRequest) {
             },
         });
 
+        const payload = {
+            id: res.id,
+            name: res.name,
+            createdAt: res.createdAt,
+            updatedAt: res.updatedAt,
+            users: [
+                {
+                    id: user?.id,
+                    name: user?.name,
+                    email: user?.email,
+                    createdAt: user?.createdAt,
+                    updatedAt: user?.updatedAt,
+                },
+            ],
+            boards: [],
+        };
 
-        return NextResponse.json(res, { status: 201 });
+        return NextResponse.json(payload, { status: 201 });
     } catch (err) {
         return NextResponse.json(
             { message: "There was an error creating the guard.", err },

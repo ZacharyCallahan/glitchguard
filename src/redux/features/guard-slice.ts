@@ -23,7 +23,6 @@ const initialState = {
     } as GuardState,
 } as InitialState;
 
-
 export const guard = createSlice({
     name: "guard",
     initialState,
@@ -36,8 +35,8 @@ export const guard = createSlice({
             };
         },
         addGuard: (state, action: PayloadAction<Guard>) => {
+            console.log(action.payload);
             state.value.guards.push(action.payload);
-            console.log(state.value);
         },
         addBoard: (state, action: PayloadAction<BoardPayload>) => {
             const guard = state.value.guards.find(
