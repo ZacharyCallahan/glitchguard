@@ -2,7 +2,12 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { useAppSelector } from "../../redux/store";
-import { DeleteBoardButton, DeleteGuardButton } from "../buttons";
+import {
+    DeleteBoardButton,
+    DeleteGuardButton,
+    EditBoardButton,
+    EditGuardButton,
+} from "../buttons";
 
 // Define the props for the Section component
 type SectionProps = {
@@ -45,6 +50,7 @@ export const Section = ({
                 ? guards.map(({ id, name }) => (
                       <div key={id}>
                           <DeleteGuardButton id={id} />
+                          <EditGuardButton id={id} />
                           <Link href={`/guard/${id}`}>{name}</Link>
                       </div>
                   ))
@@ -54,6 +60,7 @@ export const Section = ({
                       guard.boards.map((board) => (
                           <div key={board?.id}>
                               <DeleteBoardButton id={board?.id} />
+                              <EditBoardButton id={board?.id} />
                               <Link
                                   href={`/guard/${guard.id}/board/${board?.id}`}>
                                   {board?.name}
