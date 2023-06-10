@@ -6,10 +6,12 @@ export const Dashboard = () => {
             <Section
                 title="Your Guards"
                 content="What guard are you going to working on today?"
+                guardsEnabled={true}
             />
             <Section
                 title="Your Boards"
                 content="Get going with your most used boards!"
+                guardsEnabled={false}
             />
         </div>
     );

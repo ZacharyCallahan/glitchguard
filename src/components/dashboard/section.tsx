@@ -21,19 +21,12 @@ export const Section = ({
     const guards = useAppSelector((state) => state.guardReducer.value.guards);
 
     // Use useMemo to memoize the boards and allBoardsEmpty values only when the guards change
-    const { boards, allBoardsEmpty } = useMemo(() => {
+    const allBoardsEmpty = useMemo(() => {
         // Check if all the boards are empty/undefined
-        const allBoardsEmpty = guards.every((guard) => !guard.boards?.length);
-
-        // Get all the boards from the guards
-        const boards = guards.flatMap((guard) => guard.boards);
-
-        // Return the boards and allBoardsEmpty values
-        return { boards, allBoardsEmpty };
+        return guards.every((guard) => guard.boards.length);
     }, [guards]);
 
     // Render the Section component
-    console.log(allBoardsEmpty);
     return (
         <div>
             <div>
@@ -42,19 +35,24 @@ export const Section = ({
             </div>
 
             {/* If guardsEnabled is true, render the guards */}
-            {guardsEnabled &&
-                guards.map(({ id, name }) => (
-                    <div key={id}>
-                        <Link href={`/guard/${id}`}>{name}</Link>
-                    </div>
-                ))}
-
-            {/* If allBoardsEmpty is false, render the boards */}
-            {boards.map((board) => (
-                <div key={board?.id}>
-                    <Link href={`/guard/${board?.id}`}>{board?.name}</Link>
-                </div>
-            ))}
+            {guardsEnabled
+                ? guards.map(({ id, name }) => (
+                      <div key={id}>
+                          <Link href={`/guard/${id}`}>{name}</Link>
+                      </div>
+                  ))
+                : // If guardsEnabled is false, render the boards if allBoardsEmpty is false
+                  !allBoardsEmpty &&
+                  guards.flatMap((guard) =>
+                      guard.boards.map((board) => (
+                          <div key={board?.id}>
+                              <Link
+                                  href={`/guard/${guard.id}/board/${board?.id}`}>
+                                  {board?.name}
+                              </Link>
+                          </div>
+                      ))
+                  )}
         </div>
     );
 };
