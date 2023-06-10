@@ -8,6 +8,8 @@ import {
     EditBoardButton,
     EditGuardButton,
 } from "../buttons";
+import DisplayBoard from "./DisplayBoard";
+import DisplayGuard from "./DisplayGuard";
 
 // Define the props for the Section component
 type SectionProps = {
@@ -39,35 +41,30 @@ export const Section = ({
 
     // Render the Section component
     return (
-        <div>
+        <div className="">
             <div>
                 <h1>{title}</h1>
                 <p>{content}</p>
             </div>
-
-            {/* If guardsEnabled is true, render the guards */}
-            {guardsEnabled
-                ? guards.map(({ id, name }) => (
-                      <div key={id}>
-                          <DeleteGuardButton id={id} />
-                          <EditGuardButton id={id} />
-                          <Link href={`/guard/${id}`}>{name}</Link>
-                      </div>
-                  ))
-                : // If guardsEnabled is false, render the boards if allBoardsEmpty is false
-                  !allBoardsEmpty &&
-                  guards.flatMap((guard) =>
-                      guard.boards.map((board) => (
-                          <div key={board?.id}>
-                              <DeleteBoardButton id={board?.id} />
-                              <EditBoardButton id={board?.id} />
-                              <Link
-                                  href={`/guard/${guard.id}/board/${board?.id}`}>
-                                  {board?.name}
-                              </Link>
-                          </div>
+            <div className="flex gap-6 mt-6">
+                {/* If guardsEnabled is true, render the guards */}
+                {guardsEnabled
+                    ? guards.map(({ id, name }) => (
+                          <DisplayGuard key={id} id={id} name={name} />
                       ))
-                  )}
+                    : // If guardsEnabled is false, render the boards if allBoardsEmpty is false
+                      !allBoardsEmpty &&
+                      guards.flatMap((guard) =>
+                          guard.boards.map(({ name, id }) => (
+                              <DisplayBoard
+                                  key={id}
+                                  guardId={guard.id}
+                                  name={name}
+                                  id={id}
+                              />
+                          ))
+                      )}
+            </div>
             {/* If guardsEnabled is false and allBoardsEmpty is true, render a message */}
             {!guardsEnabled && allBoardsEmpty && (
                 <div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { CreateBugButton, ListOptionsButton } from "../buttons";
+import { CreateBugButton, DeleteListButton, EditListButton, OptionsButton,  } from "../buttons";
 import Bug from "./Bug";
 
 type ListProps = {
@@ -14,7 +14,10 @@ const List = ({ list, boardId, guardId, ...rest }: ListProps) => {
             <div className="border-b-2 border-black mb-3">
                 <div className="flex items-center justify-between">
                     <h3>{list.name}</h3>
-                    <ListOptionsButton id={list.id} />
+                    <OptionsButton>
+                        <DeleteListButton id={list.id} />
+                        <EditListButton id={list.id} />
+                    </OptionsButton>
                 </div>
                 <CreateBugButton
                     guardId={guardId}

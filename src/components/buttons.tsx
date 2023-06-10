@@ -21,7 +21,9 @@ import {
     editGuard,
     editList,
 } from "../redux/features/guard-slice";
-
+type OptionsButtonProps = React.HTMLProps<HTMLDivElement> & {
+    children: React.ReactNode;
+};
 export const LoginButton = () => {
     return <button onClick={() => signIn()}>Login</button>;
 };
@@ -589,11 +591,11 @@ export const DeleteBugButton = ({ id }: { id: number }) => {
     );
 };
 
-export const ListOptionsButton = ({ id }: { id: number }) => {
+export const OptionsButton = ({ children, ...rest }: OptionsButtonProps) => {
     const [open, setOpen] = useState(false);
 
     return (
-        <div>
+        <div {...rest}>
             {!open ? (
                 <button onClick={() => setOpen(!open)}>+</button>
             ) : (
@@ -602,8 +604,7 @@ export const ListOptionsButton = ({ id }: { id: number }) => {
 
             {open && (
                 <div className="absolute bg-slate-300 p-3 rounded-md flex flex-col items-start">
-                    <DeleteListButton id={id} />
-                    <EditListButton id={id} />
+                    {children}
                 </div>
             )}
         </div>
