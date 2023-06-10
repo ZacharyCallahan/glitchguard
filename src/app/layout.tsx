@@ -15,7 +15,7 @@ export const metadata = {
     description: "Create Next App with TypeScript",
 };
 
-export default async function RootLayout({
+export default  function RootLayout({
     children,
 }: {
     children: React.ReactNode;

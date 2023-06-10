@@ -2,7 +2,7 @@
 import BoardDisplay from "../../../../../components/guard/BoardDisplay";
 import { useAppSelector } from "../../../../../redux/store";
 
-const Page = async ({ params }: ParamsProp) => {
+const Page = ({ params }: ParamsProp) => {
     const id =  parseInt(params.id);
     const boardId = params.boardId;
 

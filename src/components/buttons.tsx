@@ -3,7 +3,7 @@ import axios from "axios";
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { PopupForm } from "./forms";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
@@ -36,23 +36,35 @@ export const CreateGuardButton = () => {
     const [name, setName] = useState("");
 
     const dispath = useDispatch<AppDispatch>();
-
+    const [loading, setLoading] = useState(false);
     const handleClick = () => {
         setOpen(!open);
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         axios
             .post("/api/guard/create", { name })
             .then((response) => {
+                setLoading(false);
                 dispath(addGuard(response.data));
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+            });
+        setOpen(false);
+        
     };
     return (
         <>
             <button onClick={handleClick}>Create Guard</button>
+            {
+                loading && (
+                    <div>Loading...</div>
+                )
+            }
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -77,24 +89,31 @@ export const CreateBoardButton = ({ id }: { id: number }) => {
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
     const dispatch = useDispatch<AppDispatch>();
-
+    const [loading, setLoading] = useState(false);
     const handleClick = () => {
         setOpen(!open);
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         axios
             .post(`/api/guard/board/create/${id}`, { name })
             .then((response) => {
-                console.log(response.data);
+                setLoading(false);
                 dispatch(addBoard(response.data));
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+            });
+        setOpen(false);
+        
     };
     return (
         <>
             <button onClick={handleClick}>Create Board</button>
+            {loading && <div>Loading...</div>}
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -126,6 +145,7 @@ export const CreateListButton = ({
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
     const dispatch = useDispatch<AppDispatch>();
+    const [loading, setLoading] = useState(false);
 
     const handleClick = () => {
         setOpen(!open);
@@ -133,18 +153,25 @@ export const CreateListButton = ({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         axios
             .post(`/api/guard/board/list/create/${boardId}`, { name })
             .then((response) => {
-                console.log(response.data);
+                setLoading(false);
                 const payload = { ...response.data, guardId };
                 dispatch(addList(payload));
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+            });
+        setOpen(false);
+        
     };
     return (
         <>
             <button onClick={handleClick}>Create List</button>
+            {loading && <p>Creating...</p>}
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -177,6 +204,7 @@ export const CreateBugButton = ({
 }) => {
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
         description: "",
@@ -188,17 +216,22 @@ export const CreateBugButton = ({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         axios
             .post(`/api/guard/board/list/bug/create/${listId}`, formData)
             .then((response) => {
+                setLoading(false);
                 const payload = { ...response.data, guardId, boardId, listId };
                 dispatch(addBug(payload));
             })
             .catch((error) => console.log(error));
+        setOpen(false);
+        
     };
     return (
         <>
             <button onClick={handleClick}>Create Bug</button>
+            {loading && <div>Loading...</div>}
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -239,16 +272,28 @@ export const CreateBugButton = ({
 
 export const DeleteListButton = ({ id }: { id: number }) => {
     const dispatch = useDispatch<AppDispatch>();
+    const [loading, setLoading] = useState(false);
+
     const handleClick = () => {
+        setLoading(true);
+
         axios
             .delete(`/api/guard/board/list/delete/${id}`)
             .then((response) => {
+                setLoading(false);
                 dispatch(deleteList(response.data));
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+            });
     };
 
-    return <button onClick={handleClick}>Delete List</button>;
+    return (
+        <button onClick={handleClick}>
+            Delete List {loading && <p>Deleting...</p>}
+        </button>
+    );
 };
 
 export const ListOptionsButton = ({ id }: { id: number }) => {

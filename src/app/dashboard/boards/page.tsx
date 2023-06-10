@@ -3,7 +3,7 @@
 import { Section } from "../../../components/dashboard/section";
 
 
-const page = async () => {
+const page = () => {
 
     return (
         <Section

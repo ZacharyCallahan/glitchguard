@@ -8,7 +8,7 @@ type layoutProps = {
     children: React.ReactNode;
 };
 
-const layout = async ({ params, children }: layoutProps) => {
+const layout =  ({ params, children }: layoutProps) => {
     const id = parseInt(params.id);
 
     return (

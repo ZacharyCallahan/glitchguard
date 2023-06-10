@@ -5,7 +5,7 @@ import { Subscription } from "../components/home/subscription";
 import { Teaser } from "../components/home/teaser";
 
 
-export default async function Home() {
+export default function Home() {
     return (
         <>
             <section className="h-screen">
