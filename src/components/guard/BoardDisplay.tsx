@@ -1,5 +1,5 @@
 
-import { CreateListButton } from "../buttons";
+import { CreateListButton, EditBoardButton } from "../buttons";
 import List from "./List";
 
 const BoardDisplay = ({ board, guardId }: { board: Board, guardId: number }) => {
@@ -8,6 +8,7 @@ const BoardDisplay = ({ board, guardId }: { board: Board, guardId: number }) => 
             <div className="border-b-2 border-black mb-6">
                 <h2>{board.name}</h2>
                 <CreateListButton boardId={board.id} guardId={guardId} />
+                <EditBoardButton id={board.id} />
             </div>
             <div className="flex gap-6">
                 {board.lists?.map((list) => (

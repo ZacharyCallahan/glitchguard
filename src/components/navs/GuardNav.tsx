@@ -4,6 +4,7 @@ import {
     CreateBoardButton,
     DeleteBoardButton,
     DeleteGuardButton,
+    EditGuardButton,
 } from "../buttons";
 import { useAppSelector } from "../../redux/store";
 
@@ -18,6 +19,7 @@ const GuardNav = ({ id }: { id: number }) => {
                 <li>
                     <h2>{guard.name}</h2>
                     <DeleteGuardButton id={guard.id} />
+                    <EditGuardButton id={guard.id} />
                 </li>
                 <li>
                     <Link href={`/guard/${guard.id}/settings`}>

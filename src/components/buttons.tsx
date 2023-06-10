@@ -16,6 +16,10 @@ import {
     deleteBug,
     deleteGuard,
     deleteList,
+    editBoard,
+    editBug,
+    editGuard,
+    editList,
 } from "../redux/features/guard-slice";
 
 export const LoginButton = () => {
@@ -265,6 +269,217 @@ export const CreateBugButton = ({
     );
 };
 
+export const EditGuardButton = ({ id }: { id: number }) => {
+    const [open, setOpen] = useState(false);
+    const [name, setName] = useState("");
+    const dispatch = useDispatch<AppDispatch>();
+    const [loading, setLoading] = useState(false);
+
+    const handleClick = () => {
+        setOpen(!open);
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        axios
+            .put(`/api/guard/edit/${id}`, { name })
+            .then((response) => {
+                setLoading(false);
+                dispatch(editGuard(response.data));
+            })
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+            });
+        setOpen(false);
+    };
+    return (
+        <>
+            <button onClick={handleClick}>Edit Guard</button>
+            {loading && <div>Loading...</div>}
+            {open && (
+                <PopupForm onClick={handleClick}>
+                    <form
+                        className="flex flex-col gap-4"
+                        onSubmit={handleSubmit}>
+                        <label htmlFor="name">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                        <button type="submit">Edit</button>
+                    </form>
+                </PopupForm>
+            )}
+        </>
+    );
+};
+
+export const EditBoardButton = ({ id }: { id: number }) => {
+    const [open, setOpen] = useState(false);
+    const [name, setName] = useState("");
+    const dispatch = useDispatch<AppDispatch>();
+    const [loading, setLoading] = useState(false);
+
+    const handleClick = () => {
+        setOpen(!open);
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        axios
+            .put(`/api/guard/board/edit/${id}`, { name })
+            .then((response) => {
+                setLoading(false);
+                dispatch(editBoard(response.data));
+            })
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+            });
+        setOpen(false);
+    };
+    return (
+        <>
+            <button onClick={handleClick}>Edit Board</button>
+            {loading && <div>Loading...</div>}
+            {open && (
+                <PopupForm onClick={handleClick}>
+                    <form
+                        className="flex flex-col gap-4"
+                        onSubmit={handleSubmit}>
+                        <label htmlFor="name">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                        <button type="submit">Edit</button>
+                    </form>
+                </PopupForm>
+            )}
+        </>
+    );
+};
+
+export const EditListButton = ({ id }: { id: number }) => {
+    const [open, setOpen] = useState(false);
+    const [name, setName] = useState("");
+    const dispatch = useDispatch<AppDispatch>();
+    const [loading, setLoading] = useState(false);
+
+    const handleClick = () => {
+        setOpen(!open);
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        axios
+            .put(`/api/guard/board/list/edit/${id}`, { name })
+            .then((response) => {
+                dispatch(editList(response.data));
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+            });
+        setOpen(false);
+    };
+    return (
+        <>
+            <button onClick={handleClick}>Edit List</button>
+            {loading && <div>Loading...</div>}
+            {open && (
+                <PopupForm onClick={handleClick}>
+                    <form
+                        className="flex flex-col gap-4"
+                        onSubmit={handleSubmit}>
+                        <label htmlFor="name">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                        <button type="submit">Edit</button>
+                    </form>
+                </PopupForm>
+            )}
+        </>
+    );
+};
+
+export const EditBugButton = ({ id }: { id: number }) => {
+    const [open, setOpen] = useState(false);
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    const dispatch = useDispatch<AppDispatch>();
+    const [loading, setLoading] = useState(false);
+
+    const handleClick = () => {
+        setOpen(!open);
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        axios
+            .put(`/api/guard/board/list/bug/edit/${id}`, {
+                name,
+                description,
+            })
+            .then((response) => {
+                dispatch(editBug(response.data));
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+            });
+        setOpen(false);
+    };
+    return (
+        <>
+            <button onClick={handleClick}>Edit Bug</button>
+            {loading && <div>Loading...</div>}
+            {open && (
+                <PopupForm onClick={handleClick}>
+                    <form
+                        className="flex flex-col gap-4"
+                        onSubmit={handleSubmit}>
+                        <label htmlFor="name">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                        <label htmlFor="description">Description</label>
+                        <textarea
+                            name="description"
+                            id="description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        />
+                        <button type="submit">Edit</button>
+                    </form>
+                </PopupForm>
+            )}
+        </>
+    );
+};
+
 export const DeleteGuardButton = ({ id }: { id: number }) => {
     const dispatch = useDispatch<AppDispatch>();
     const [loading, setLoading] = useState(false);
@@ -388,7 +603,7 @@ export const ListOptionsButton = ({ id }: { id: number }) => {
             {open && (
                 <div className="absolute bg-slate-300 p-3 rounded-md flex flex-col items-start">
                     <DeleteListButton id={id} />
-                    <button>Edit</button>
+                    <EditListButton id={id} />
                 </div>
             )}
         </div>

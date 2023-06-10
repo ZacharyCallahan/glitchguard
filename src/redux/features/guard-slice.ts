@@ -140,6 +140,7 @@ export const guard = createSlice({
             const guard = state.value.guards.find(
                 (guard) => guard.id === action.payload.resList.board.guardId
             );
+            // Find the board that matches the board that was passed in.
             const board = guard?.boards.find(
                 (board) => board.id === action.payload.resList.board.id
             );
@@ -172,6 +173,73 @@ export const guard = createSlice({
             }
         },
 
+        editGuard: (state, action: PayloadAction<Guard>) => {
+            // Find the guard that matches the guard that was passed in.
+            const guard = state.value.guards.find(
+                (guard) => guard.id === action.payload.id
+            );
+            // If the guard was found, edit the guard that was passed in
+            if (guard) {
+                guard.name = action.payload.name;
+            }
+        },
+
+        editBoard: (state, action: PayloadAction<BoardPayload>) => {
+            // Find the guard that matches the guard that was passed in.
+            const guard = state.value.guards.find(
+                (guard) => guard.id === action.payload.guardId
+            );
+            // Find the board that matches the board that was passed in.
+            const board = guard?.boards.find(
+                (board) => board.id === action.payload.id
+            );
+            // If the board was found, edit the board that was passed in
+            if (board) {
+                board.name = action.payload.name;
+            }
+        },
+
+        editList: (state, action: PayloadAction<ListPayload>) => {
+            // Find the guard that matches the guard that was passed in.
+            const guard = state.value.guards.find(
+                (guard) => guard.id === action.payload.guardId
+            );
+            // Find the board that matches the board that was passed in.
+            const board = guard?.boards.find(
+                (board) => board.id === action.payload.boardId
+            );
+            // Find the list that matches the list that was passed in.
+            const list = board?.lists.find(
+                (list) => list.id === action.payload.id
+            );
+            // If the list was found, edit the list that was passed in
+            if (list) {
+                list.name = action.payload.name;
+            }
+        },
+
+        editBug: (state, action: PayloadAction<BugPayload>) => {
+            // Find the guard that matches the guard that was passed in.
+            const guard = state.value.guards.find(
+                (guard) => guard.id === action.payload.guardId
+            );
+            // Find the board that matches the board that was passed in.
+            const board = guard?.boards.find(
+                (board) => board.id === action.payload.boardId
+            );
+            // Find the list that matches the list that was passed in.
+            const list = board?.lists.find(
+                (list) => list.id === action.payload.listId
+            );
+            // Find the bug that matches the bug that was passed in.
+            const bug = list?.bugs.find((bug) => bug.id === action.payload.id);
+            // If the bug was found, edit the bug that was passed in
+            if (bug) {
+                bug.name = action.payload.name;
+                bug.description = action.payload.description;
+            }
+        },
+
         clearGuards: () => {
             return initialState;
         },
@@ -189,5 +257,9 @@ export const {
     deleteBoard,
     deleteList,
     deleteBug,
+    editGuard,
+    editBoard,
+    editList,
+    editBug,
 } = guard.actions;
 export default guard.reducer;
