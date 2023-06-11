@@ -3,39 +3,41 @@ import { CreateGuardButton, LoginButton, LogoutButton } from "./buttons";
 
 export const GlobalNav = () => {
     return (
-        <nav className="flex justify-between items-center h-20 m-auto w-5/6">
-            <ul className="flex items-center gap-6">
-                <li>
-                    <Link href={"/"}>GlitchGuard</Link>
-                </li>
-                <li>
-                    <Link href={"/"}>Home</Link>
-                </li>
-                <li>
-                    <Link href={"/dashboard"}>Dashboard</Link>
-                </li>
-                <li>
-                    <CreateGuardButton />
-                </li>
-            </ul>
-            <ul className="flex items-center gap-6">
-                <li>
-                    <input
-                        placeholder="Search"
-                        type="search"
-                        name="search"
-                        id="search"
-                        className="border-2 border-black"
-                    />
-                </li>
-                <li>
-                    <LoginButton />
-                    <LogoutButton />
-                </li>
-                <li>
-                    <Link href={"/profile"}>Profile</Link>
-                </li>
-            </ul>
+        <nav className=" bg-white rounded-md shadow-sm mb-6">
+            <div className="flex justify-between items-center h-20 m-auto w-5/6">
+                <ul className="flex items-center gap-6">
+                    <li>
+                        <Link href={"/"}>GlitchGuard</Link>
+                    </li>
+                    <li>
+                        <Link href={"/"}>Home</Link>
+                    </li>
+                    <li>
+                        <Link href={"/dashboard"}>Dashboard</Link>
+                    </li>
+                    <li>
+                        <CreateGuardButton />
+                    </li>
+                </ul>
+                <ul className="flex items-center gap-6">
+                    <li>
+                        <input
+                            placeholder="Search"
+                            type="search"
+                            name="search"
+                            id="search"
+                            className="border-2 border-black"
+                        />
+                    </li>
+                    <li>
+                        <LoginButton />
+                        <LogoutButton />
+                    </li>
+                    <li>
+                        <Link href={"/profile"}>Profile</Link>
+                    </li>
+                </ul>
+            </div>
         </nav>
     );
 };

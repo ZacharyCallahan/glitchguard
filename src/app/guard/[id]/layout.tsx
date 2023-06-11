@@ -1,5 +1,5 @@
 import React from "react";
-import GuardNav from "../../../components/navs/GuardNav";
+import GuardNav from "../../../components/guard/GuardNav";
 
 type layoutProps = {
     params: {

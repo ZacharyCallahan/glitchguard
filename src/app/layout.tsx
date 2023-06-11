@@ -25,7 +25,7 @@ export default function RootLayout({
                     href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
                 />
             </head>
-            <body className={`${rubik.className}`}>
+            <body className={`${rubik.className} bg-gray-100`}>
                 <NextAuthProvider>
                     <ReduxProvider>
                         <DataFetchingProvider>

@@ -115,7 +115,9 @@ export const CreateBoardButton = ({ id }: { id: number }) => {
     };
     return (
         <>
-            <button onClick={handleClick}>Create Board</button>
+            <button onClick={handleClick} className="text-xl">
+                Create Board
+            </button>
             {loading && <div>Loading...</div>}
             {open && (
                 <PopupForm onClick={handleClick}>
@@ -603,7 +605,7 @@ export const OptionsButton = ({ children, ...rest }: OptionsButtonProps) => {
             )}
 
             {open && (
-                <div className="absolute bg-slate-300 p-3 rounded-md flex flex-col items-start">
+                <div className="z-[999] absolute bg-slate-300 p-3 rounded-md flex flex-col items-start">
                     {children}
                 </div>
             )}
