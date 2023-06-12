@@ -1,5 +1,10 @@
 import React from "react";
-import { CreateBugButton, DeleteListButton, EditListButton, OptionsButton,  } from "../buttons";
+import {
+    CreateBugButton,
+    DeleteListButton,
+    EditListButton,
+    OptionsButton,
+} from "../../buttons";
 import Bug from "./Bug";
 
 type ListProps = {

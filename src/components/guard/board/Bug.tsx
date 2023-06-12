@@ -1,4 +1,4 @@
-import { DeleteBugButton, EditBugButton } from "../buttons";
+import { DeleteBugButton, EditBugButton } from "../../buttons";
 
 type BugProps = {
     bug: Bug;
