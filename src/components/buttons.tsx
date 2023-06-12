@@ -603,6 +603,7 @@ export const OptionsButton = ({ children, ...rest }: OptionsButtonProps) => {
             ) : (
                 <button onClick={() => setOpen(!open)}>-</button>
             )}
+            
 
             {open && (
                 <div className="z-[999] absolute bg-slate-300 p-3 rounded-md flex flex-col items-start">
