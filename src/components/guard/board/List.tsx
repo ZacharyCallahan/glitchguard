@@ -1,11 +1,13 @@
+import Link from "next/link";
 import React from "react";
 import {
     CreateBugButton,
+    CreateListButton,
     DeleteListButton,
     EditListButton,
     OptionsButton,
 } from "../../buttons";
-import Bug from "./Bug";
+import Bug from "./list/Bug";
 
 type ListProps = {
     list: List;
@@ -13,27 +15,24 @@ type ListProps = {
     guardId: number;
 };
 
-const List = ({ list, boardId, guardId, ...rest }: ListProps) => {
+const List = ({ list, boardId, guardId }: ListProps) => {
     return (
-        <div className="border-2 border-black p-6 space-y-3" {...rest}>
-            <div className="border-b-2 border-black mb-3">
-                <div className="flex items-center justify-between">
-                    <h3>{list.name}</h3>
-                    <OptionsButton>
-                        <DeleteListButton id={list.id} />
-                        <EditListButton id={list.id} />
-                    </OptionsButton>
-                </div>
-                <CreateBugButton
-                    guardId={guardId}
-                    boardId={boardId}
-                    listId={list.id}
-                />
-            </div>
-            {list.bugs.map((bug) => (
-                <Bug bug={bug} key={bug.id} />
-            ))}
-        </div>
+        <tr className=" border-b-2 table-row  hover:bg-gray-200 ">
+            <td className="py-4 sm:px-2 md:px-4 lg:px-6 xl:px-8">
+                {list.name}
+            </td>
+            <td className="py-4 sm:px-2 md:px-4 lg:px-6 xl:px-8">
+                {list.bugs.length}
+            </td>
+            <td className="py-4 sm:px-2 md:px-4 lg:px-6 xl:px-8 space-x-3">
+                <Link
+                    href={`/guard/${guardId}/board/${boardId}/list/${list.id}`}>
+                    View List
+                </Link>
+                <DeleteListButton id={list.id} />
+                <EditListButton id={list.id} />
+            </td>
+        </tr>
     );
 };
 

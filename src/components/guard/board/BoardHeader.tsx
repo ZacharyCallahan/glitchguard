@@ -19,7 +19,6 @@ const BoardHeader = ({ board, guardId }: BoardHeaderProps) => {
 
                 <OptionsButton>
                     <CreateListButton boardId={board.id} guardId={guardId} />
-
                     <EditBoardButton id={board.id} />
                 </OptionsButton>
             </div>

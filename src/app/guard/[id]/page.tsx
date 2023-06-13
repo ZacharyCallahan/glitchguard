@@ -12,7 +12,7 @@ const Page = ({ params }: ParamsProp) => {
     );
 
     return (
-        <div className="w-3/4 mr-12 space-y-6 ">
+        <div className="w-3/4 mr-12 space-y-6">
             <div className=" space-y-2">
                 <h2 className="text-2xl font-semibold ">
                     Welcome to Guard - {guard.name}

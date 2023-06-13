@@ -224,9 +224,9 @@ export const CreateBugButton = ({
         axios
             .post(`/api/guard/board/list/bug/create/${listId}`, formData)
             .then((response) => {
-                setLoading(false);
                 const payload = { ...response.data, guardId, boardId, listId };
                 dispatch(addBug(payload));
+                setLoading(false);
             })
             .catch((error) => console.log(error));
         setOpen(false);
@@ -603,9 +603,7 @@ export const OptionsButton = ({ children, ...rest }: OptionsButtonProps) => {
             ) : (
                 <button onClick={() => setOpen(!open)}>-</button>
             )}
-            
 
-            
             {open && (
                 <div className="z-[999] absolute bg-slate-300 p-3 rounded-md flex flex-col items-start">
                     {children}

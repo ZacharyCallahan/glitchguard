@@ -5,7 +5,7 @@ module.exports = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-   theme: {
+  theme: {
     extend: {
       colors: {
         'ct-dark-600': '#222',
@@ -25,6 +25,10 @@ module.exports = {
           xl: '1125px',
           '2xl': '1125px',
         },
+      },
+      gridTemplateColumns: {
+        'fluid': 'repeat(auto-fit, minmax(14rem, 2fr))',
+        'product-fluid': 'repeat(auto-fit, minmax(15rem, 1fr))',
       },
     },
   },

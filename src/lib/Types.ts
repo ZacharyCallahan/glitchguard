@@ -88,6 +88,7 @@ type ParamsProp = {
     params: {
         id: string;
         boardId: string;
+        listId: string;
     };
 };
 

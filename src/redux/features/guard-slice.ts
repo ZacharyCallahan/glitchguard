@@ -82,17 +82,23 @@ export const guard = createSlice({
 
         addBug: (state, action: PayloadAction<BugPayload>) => {
             // Find the list to which the bug is being added
+            console.log(action.payload.boardId);
+
+
             const guard = state.value.guards.find(
                 (guard) => guard.id === action.payload.guardId
             );
+            console.log("Found guard: ", guard);
             // Find the board to which the bug is being added
             const board = guard.boards.find(
                 (board) => board.id === action.payload.boardId
             );
+            console.log("Found board: ", board);
             // Find the list to which the bug is being added
             const list = board.lists.find(
                 (list) => list.id === action.payload.listId
             );
+            console.log("Found list: ", list);
 
             // Add the bug to the list
             list.bugs.push({
@@ -102,6 +108,7 @@ export const guard = createSlice({
                 createdAt: action.payload.createdAt,
                 updatedAt: action.payload.updatedAt,
             });
+            console.log("Bug added to list: ", list);
         },
         deleteGuard: (
             state,
