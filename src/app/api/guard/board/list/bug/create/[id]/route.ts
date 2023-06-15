@@ -42,7 +42,7 @@ export async function POST(req: NextRequest, { params }: ParamsProp) {
         return NextResponse.json(res, { status: 201 });
     } catch (err) {
         return NextResponse.json(
-            { message: "There was an error creating the list.", err },
+            { message: "There was an error creating the bug.", err },
             { status: 500 }
         );
     }
