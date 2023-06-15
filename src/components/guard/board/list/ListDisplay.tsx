@@ -19,7 +19,7 @@ const ListDisplay = ({ boardId, guardId, listId }) => {
             <ListHeader list={list} guardId={guardId} boardId={boardId} />
             <div className="grid grid-cols-fluid gap-6 w-full ">
                 {list.bugs.map((bug) => (
-                    <Bug key={bug.id} bug={bug} />
+                    <Bug key={bug.id} bug={bug} boardId={boardId} guardId={guardId} listId={listId} />
                 ))}
             </div>
         </div>

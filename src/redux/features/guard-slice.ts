@@ -98,6 +98,9 @@ export const guard = createSlice({
                 id: action.payload.id,
                 name: action.payload.name,
                 description: action.payload.description,
+                assignedUsers: [] as User[],
+                color: action.payload.color,
+                createdById: action.payload.createdById,
                 createdAt: action.payload.createdAt,
                 updatedAt: action.payload.updatedAt,
             });

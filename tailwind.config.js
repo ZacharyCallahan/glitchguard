@@ -27,8 +27,8 @@ module.exports = {
         },
       },
       gridTemplateColumns: {
-        'fluid': 'repeat(auto-fit, minmax(14rem, 2fr))',
-        'product-fluid': 'repeat(auto-fit, minmax(15rem, 1fr))',
+        'fluid': 'repeat(auto-fit, minmax(17rem, 1fr))',
+
       },
     },
   },

@@ -11,13 +11,15 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  guards    Guard[]
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  password     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  guards       Guard[]
+  assignedBugs Bug[]    @relation("assignedUsers")
+  createdBugs  Bug[]    @relation("createdBy")
 }
 
 model Guard {
@@ -50,11 +52,18 @@ model List {
 }
 
 model Bug {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String
-  list        List     @relation(fields: [listId], references: [id])
-  listId      Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            Int       @id @default(autoincrement())
+  name          String
+  description   String
+  status        String    @default("open")
+  assignedUsers User[]    @relation("assignedUsers")
+  deadline      DateTime?
+  color         String
+  priority      String    @default("low")
+  list          List      @relation(fields: [listId], references: [id])
+  listId        Int
+  createdBy     User      @relation("createdBy", fields: [createdById], references: [id])
+  createdById   String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }

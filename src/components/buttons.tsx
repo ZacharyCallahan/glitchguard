@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { signIn, signOut } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -67,7 +67,6 @@ export const CreateGuardButton = () => {
     };
     return (
         <>
-            
             <button onClick={handleClick}>Create Guard</button>
             {loading && <div>Loading...</div>}
             {open && (
@@ -210,10 +209,20 @@ export const CreateBugButton = ({
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
     const [loading, setLoading] = useState(false);
+    //createdBy is the user id
+    const session = useSession();
+    const createdBy = session.data.user;
+
     const [formData, setFormData] = useState({
         name: "",
         description: "",
+        createdBy: createdBy,
+        deadline: "",
+        priority: "low",
+        status: "open",
+        color: "#000"
     });
+
 
     const handleClick = () => {
         setOpen(!open);
@@ -222,6 +231,7 @@ export const CreateBugButton = ({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        console.log(formData);
         axios
             .post(`/api/guard/board/list/bug/create/${listId}`, formData)
             .then((response) => {
@@ -229,7 +239,10 @@ export const CreateBugButton = ({
                 dispatch(addBug(payload));
                 setLoading(false);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+            });
         setOpen(false);
     };
     return (
@@ -266,6 +279,35 @@ export const CreateBugButton = ({
                                 })
                             }
                         />
+                        <label htmlFor="deadline">Deadline</label>
+                        <input
+                            type="date"
+                            name="deadline"
+                            id="deadline"
+                            value={formData.deadline}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    deadline: e.target.value,
+                                })
+                            }
+                        />
+                        {/* color wheel */}
+                        <label htmlFor="color">Color</label>
+                        <input
+                            type="color"
+                            name="color"
+                            id="color"
+                            value={formData.color}
+                            onChange={(e) =>    
+                                setFormData({
+                                    ...formData,
+                                    color: e.target.value,
+                                })
+                            }
+                        />
+                        
+                        
                         <button type="submit">Create</button>
                     </form>
                 </PopupForm>

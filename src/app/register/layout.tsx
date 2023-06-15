@@ -3,7 +3,7 @@ import { Footer } from "../../components/footer";
 import { GlobalNav } from "../../components/navs";
 import ReduxProvider from "../../redux/provider";
 import { DataFetchingProvider, NextAuthProvider } from "../providers";
-import "./globals.css";
+import "../globals.css"
 
 const rubik = Rubik({ subsets: ["cyrillic"] });
 

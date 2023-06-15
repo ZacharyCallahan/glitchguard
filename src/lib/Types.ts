@@ -26,7 +26,7 @@ type ListPayload = {
 
 type TempGuardPayloadForDelete = {
     guardId: number;
-}
+};
 
 type TempBoardPayloadForDelete = {
     guardId: number;
@@ -55,9 +55,12 @@ type BugPayload = {
     listId: number;
     id: number;
     name: string;
+    color: string;
     description: string;
     updatedAt: String;
     createdAt: String;
+    assignedUsers: User[];
+    createdById: String;
 };
 type User = {
     id: string;
@@ -104,6 +107,13 @@ type Bug = {
     id: number;
     name: string;
     description: string;
+    status?: string;
+    assignedUsers: User[] | [];
+    color: string;
+    deadline?: String;
+    priority?: string;
+    createdById: String;
+    createdBy?: User;
     createdAt: String;
     updatedAt: String;
 };
