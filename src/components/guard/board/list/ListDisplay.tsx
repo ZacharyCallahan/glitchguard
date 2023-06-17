@@ -3,7 +3,9 @@ import { useAppSelector } from "../../../../redux/store";
 import Bug from "./Bug";
 import ListHeader from "./ListHeader";
 
-const ListDisplay = ({ boardId, guardId, listId }) => {
+
+
+const ListDisplay = ({ boardId, guardId, listId } ) => {
     const guards = useAppSelector((state) => state.guardReducer.value.guards);
 
     const guard = guards.find((guard) => guard.id === guardId);
