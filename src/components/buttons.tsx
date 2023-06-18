@@ -3,7 +3,7 @@ import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { ChangeEvent, useState, useTransition } from "react";
 import { PopupForm } from "./forms";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
@@ -218,11 +218,10 @@ export const CreateBugButton = ({
         description: "",
         createdBy: createdBy,
         deadline: "",
-        priority: "low",
-        status: "open",
-        color: "#000"
+        priority: "Low",
+        status: "To Do",
+        color: "#000",
     });
-
 
     const handleClick = () => {
         setOpen(!open);
@@ -299,15 +298,14 @@ export const CreateBugButton = ({
                             name="color"
                             id="color"
                             value={formData.color}
-                            onChange={(e) =>    
+                            onChange={(e) =>
                                 setFormData({
                                     ...formData,
                                     color: e.target.value,
                                 })
                             }
                         />
-                        
-                        
+
                         <button type="submit">Create</button>
                     </form>
                 </PopupForm>
@@ -466,10 +464,19 @@ export const EditListButton = ({ id }: { id: number }) => {
     );
 };
 
-export const EditBugButton = ({ id }: { id: number }) => {
+export const EditBugButton = ({ bug }: { bug: Bug }) => {
     const [open, setOpen] = useState(false);
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
+    const deadline = new Date(bug.deadline.toString())
+    const formatedDeadline = deadline.toISOString().split("T")[0];
+    const [formData, setFormData] = useState({
+        name: bug.name || "",
+        description: bug.description || "",
+        priority: bug.priority || "",
+        status: bug.status || "",
+        assignedTo: bug.assignedUsers || "",
+        deadline: formatedDeadline || "",
+        color: bug.color || "",
+    });
     const dispatch = useDispatch<AppDispatch>();
     const [loading, setLoading] = useState(false);
 
@@ -477,14 +484,20 @@ export const EditBugButton = ({ id }: { id: number }) => {
         setOpen(!open);
     };
 
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+        console.log(formData);
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        console.log(formData);
         axios
-            .put(`/api/guard/board/list/bug/edit/${id}`, {
-                name,
-                description,
-            })
+            .put(`/api/guard/board/list/bug/edit/${bug.id}`, formData)
             .then((response) => {
                 dispatch(editBug(response.data));
                 setLoading(false);
@@ -509,16 +522,63 @@ export const EditBugButton = ({ id }: { id: number }) => {
                             type="text"
                             name="name"
                             id="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={formData.name}
+                            onChange={(e) => handleChange(e)}
                         />
                         <label htmlFor="description">Description</label>
                         <textarea
                             name="description"
                             id="description"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
+                            value={formData.description}
+                            onChange={(e) => handleChange(e)}
                         />
+                        <label htmlFor="priority">Priority</label>
+                        <select
+                            name="priority"
+                            id="priority"
+                            value={formData.priority}
+                            onChange={(e) => handleChange(e)}>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                        {/* TODO: get this working  */}
+                        <label htmlFor="status">Status</label>
+                        <select
+                            name="status"
+                            id="status"
+                            value={formData.status}
+                            onChange={(e) => handleChange(e)}>
+                            <option value="To Do">To Do</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Done">Done</option>
+                        </select>
+                        <label htmlFor="assignedTo">Assigned To</label>
+                        {/* TODO: Change the value and how this is rendered */}
+                        <input
+                            type="text"
+                            name="assignedTo"
+                            id="assignedTo"
+                            value={formData.assignedTo.toString()} 
+                            onChange={(e) => handleChange(e)}
+                        />
+                        <label htmlFor="deadline">Deadline</label>
+                        <input
+                            type="date"
+                            name="deadline"
+                            id="deadline"
+                            value={formData.deadline}
+                            onChange={(e) => handleChange(e)}
+                        />
+                        <label htmlFor="color">Color</label>
+                        <input
+                            type="color"
+                            name="color"
+                            id="color"
+                            value={formData.color}
+                            onChange={(e) => handleChange(e)}
+                        />
+
                         <button type="submit">Edit</button>
                     </form>
                 </PopupForm>

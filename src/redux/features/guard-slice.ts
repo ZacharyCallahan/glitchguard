@@ -93,6 +93,7 @@ export const guard = createSlice({
             const list = board.lists.find(
                 (list) => list.id === action.payload.listId
             );
+            console.log(action.payload);
             // Add the bug to the list
             list.bugs.push({
                 id: action.payload.id,
@@ -101,6 +102,9 @@ export const guard = createSlice({
                 assignedUsers: [] as User[],
                 color: action.payload.color,
                 createdById: action.payload.createdById,
+                deadline: action.payload.deadline,
+                priority: action.payload.priority,
+                status: action.payload.status,
                 createdAt: action.payload.createdAt,
                 updatedAt: action.payload.updatedAt,
             });
@@ -239,6 +243,11 @@ export const guard = createSlice({
             if (bug) {
                 bug.name = action.payload.name;
                 bug.description = action.payload.description;
+                bug.assignedUsers = action.payload.assignedUsers;
+                bug.color = action.payload.color;
+                bug.deadline = action.payload.deadline;
+                bug.status = action.payload.status;
+                bug.priority = action.payload.priority;
             }
         },
 

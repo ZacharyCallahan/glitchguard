@@ -61,6 +61,9 @@ type BugPayload = {
     createdAt: String;
     assignedUsers: User[];
     createdById: String;
+    deadline: String;
+    priority: string;
+    status: string;
 };
 type User = {
     id: string;

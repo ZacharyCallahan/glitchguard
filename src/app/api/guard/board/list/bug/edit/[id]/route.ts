@@ -6,6 +6,8 @@ export async function PUT(req: NextRequest, { params }: ParamsProp) {
     try {
         const body = await req.text();
         const bug: Bug = JSON.parse(body);
+        const convertedDeadline = new Date(bug.deadline.toString());
+        console.log(bug);
 
         if (!bug.name) {
             return NextResponse.json(
@@ -32,6 +34,14 @@ export async function PUT(req: NextRequest, { params }: ParamsProp) {
             data: {
                 name: bug.name,
                 description: bug.description,
+                priority: bug.priority,
+                status: bug.status,
+                deadline: convertedDeadline,
+                color: bug.color,
+                // TODO: get assingedUsers working
+                // assignedUsers: {
+                //     set: bug.assignedUsers,
+                // },
             },
         });
         const payload = {
@@ -41,6 +51,10 @@ export async function PUT(req: NextRequest, { params }: ParamsProp) {
             id,
             name: res.name,
             description: res.description,
+            priority: res.priority,
+            status: res.status,
+            deadline: res.deadline,
+            color: res.color,
         };
         return NextResponse.json(payload, { status: 200 });
     } catch (error) {

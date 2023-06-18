@@ -19,10 +19,11 @@ const Bug = ({ bug, guardId, boardId, listId, ...rest }: BugProps) => {
             .find((guard) => guard.id === guardId)
             .users.find((user) => user.id === bug.createdById)
     );
-
+    console.log()
     const formatedDeadline = new Date(
-        bug.createdAt.toString()
+        bug.deadline?.toString()
     ).toLocaleDateString("en-US", {
+        timeZone: "UTC",
         weekday: "long",
         year: "numeric",
         month: "long",
@@ -39,7 +40,7 @@ const Bug = ({ bug, guardId, boardId, listId, ...rest }: BugProps) => {
                 <div className="flex justify-between items-center border-b-2 pb-3">
                     <h3 className="text-md font-semibold">{bug.name}</h3>
                     <OptionsButton>
-                        <EditBugButton id={bug.id} />
+                        <EditBugButton bug={bug} />
                         <DeleteBugButton id={bug.id} />
                     </OptionsButton>
                 </div>

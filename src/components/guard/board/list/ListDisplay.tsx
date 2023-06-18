@@ -15,6 +15,9 @@ const ListDisplay = ({ boardId, guardId, listId } ) => {
     const list = boards
         .filter((board) => board.id === parseInt(boardId))[0]
         .lists.filter((list) => list.id === parseInt(listId))[0];
+    
+    
+
 
     return (
         <div className="space-y-6 w-full">

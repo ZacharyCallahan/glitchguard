@@ -55,11 +55,11 @@ model Bug {
   id            Int       @id @default(autoincrement())
   name          String
   description   String
-  status        String    @default("open")
+  status        String    @default("To Do")
   assignedUsers User[]    @relation("assignedUsers")
   deadline      DateTime?
   color         String
-  priority      String    @default("low")
+  priority      String    @default("Low")
   list          List      @relation(fields: [listId], references: [id])
   listId        Int
   createdBy     User      @relation("createdBy", fields: [createdById], references: [id])
