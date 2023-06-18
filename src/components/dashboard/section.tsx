@@ -46,7 +46,7 @@ export const Section = ({
                 <h1>{title}</h1>
                 <p>{content}</p>
             </div>
-            <div className="flex gap-6 mt-6">
+            <div className="grid grid-cols-dashboard-fluid gap-6 mt-6 ">
                 {/* If guardsEnabled is true, render the guards */}
                 {guardsEnabled
                     ? guards.map(({ id, name }) => (

@@ -1,5 +1,10 @@
 const loading = () => {
-    return <div className="h-screen bg-purple-600">Loading</div>;
+    //TODO: change this to a pulsing animation of cards
+    return (
+        <div className="flex justify-center items-center h-screen">
+            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-500"></div>
+        </div>
+    );
 };
 
 export default loading;

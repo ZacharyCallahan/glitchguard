@@ -24,7 +24,7 @@ const List = ({ list, boardId, guardId }: ListProps) => {
             <td className="py-4 sm:px-2 md:px-4 lg:px-6 xl:px-8">
                 {list.bugs.length}
             </td>
-            <td className="py-4 sm:px-2 md:px-4 lg:px-6 xl:px-8 space-x-3">
+            <td className="flex  py-4 sm:px-2 md:px-4 lg:px-6 xl:px-8 space-x-3">
                 <Link
                     href={`/guard/${guardId}/board/${boardId}/list/${list.id}`}>
                     View List

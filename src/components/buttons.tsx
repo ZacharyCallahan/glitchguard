@@ -21,6 +21,8 @@ import {
     editGuard,
     editList,
 } from "../redux/features/guard-slice";
+import spinner from "./Spinner";
+import Spinner from "./Spinner";
 type OptionsButtonProps = React.HTMLProps<HTMLDivElement> & {
     children: React.ReactNode;
 };
@@ -67,8 +69,10 @@ export const CreateGuardButton = () => {
     };
     return (
         <>
-            <button onClick={handleClick}>Create Guard</button>
-            {loading && <div>Loading...</div>}
+            <div className="flex gap-3 items-center">
+                <button onClick={handleClick}>Create Guard</button>
+                {loading && <Spinner />}
+            </div>
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -115,10 +119,12 @@ export const CreateBoardButton = ({ id }: { id: number }) => {
     };
     return (
         <>
-            <button onClick={handleClick} className="text-xl">
-                Create Board
-            </button>
-            {loading && <div>Loading...</div>}
+            <div className="flex gap-3 items-center">
+                <button onClick={handleClick} className="text-xl">
+                    Create Board
+                </button>
+                {loading && <Spinner />}
+            </div>
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -174,8 +180,10 @@ export const CreateListButton = ({
     };
     return (
         <>
-            <button onClick={handleClick}>Create List</button>
-            {loading && <p>Creating...</p>}
+            <div className="flex gap-3 items-center">
+                <button onClick={handleClick}>Create List</button>
+                {loading && <Spinner />}
+            </div>
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -246,8 +254,10 @@ export const CreateBugButton = ({
     };
     return (
         <>
-            <button onClick={handleClick}>Create Bug</button>
-            {loading && <div>Loading...</div>}
+            <div className="flex gap-3 items-center">
+                <button onClick={handleClick}>Create Bug</button>
+                {loading && <Spinner />}
+            </div>
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -341,8 +351,10 @@ export const EditGuardButton = ({ id }: { id: number }) => {
     };
     return (
         <>
-            <button onClick={handleClick}>Edit Guard</button>
-            {loading && <div>Loading...</div>}
+            <div className="flex gap-3 items-center">
+                <button onClick={handleClick}>Edit Guard</button>
+                {loading && <Spinner />}
+            </div>
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -391,8 +403,10 @@ export const EditBoardButton = ({ id }: { id: number }) => {
     };
     return (
         <>
-            <button onClick={handleClick}>Edit Board</button>
-            {loading && <div>Loading...</div>}
+            <div className="flex gap-3 items-center">
+                <button onClick={handleClick}>Edit Board</button>
+                {loading && <Spinner />}
+            </div>
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -441,8 +455,10 @@ export const EditListButton = ({ id }: { id: number }) => {
     };
     return (
         <>
-            <button onClick={handleClick}>Edit List</button>
-            {loading && <div>Loading...</div>}
+            <div className="flex gap-3 items-center">
+                <button onClick={handleClick}>Edit List</button>
+                {loading && <Spinner />}
+            </div>
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -466,7 +482,7 @@ export const EditListButton = ({ id }: { id: number }) => {
 
 export const EditBugButton = ({ bug }: { bug: Bug }) => {
     const [open, setOpen] = useState(false);
-    const deadline = new Date(bug.deadline.toString())
+    const deadline = new Date(bug.deadline.toString());
     const formatedDeadline = deadline.toISOString().split("T")[0];
     const [formData, setFormData] = useState({
         name: bug.name || "",
@@ -510,8 +526,10 @@ export const EditBugButton = ({ bug }: { bug: Bug }) => {
     };
     return (
         <>
-            <button onClick={handleClick}>Edit Bug</button>
-            {loading && <div>Loading...</div>}
+            <div className="flex gap-3 items-center">
+                <button onClick={handleClick}>Edit Bug</button>
+                {loading && <Spinner />}
+            </div>
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -542,7 +560,6 @@ export const EditBugButton = ({ bug }: { bug: Bug }) => {
                             <option value="Medium">Medium</option>
                             <option value="High">High</option>
                         </select>
-                        {/* TODO: get this working  */}
                         <label htmlFor="status">Status</label>
                         <select
                             name="status"
@@ -559,7 +576,7 @@ export const EditBugButton = ({ bug }: { bug: Bug }) => {
                             type="text"
                             name="assignedTo"
                             id="assignedTo"
-                            value={formData.assignedTo.toString()} 
+                            value={formData.assignedTo.toString()}
                             onChange={(e) => handleChange(e)}
                         />
                         <label htmlFor="deadline">Deadline</label>
@@ -592,29 +609,30 @@ export const DeleteGuardButton = ({ id }: { id: number }) => {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
+    const [resError, setResError] = useState(false);
 
-    const handleClick = () => {
+    const handleClick = async () => {
         setLoading(true);
 
-        axios
+        await axios
             .delete(`/api/guard/delete/${id}`)
             .then((response) => {
                 setLoading(false);
-                console.log(response.data);
                 dispatch(deleteGuard(response.data));
-                //check if we are on the guard page
-                if (pathname.includes(`/guard/${id}`)) router.push("/");
             })
             .catch((error) => {
                 console.log(error);
                 setLoading(false);
+                setResError(true);
             });
+        if (pathname.includes(`/guard/${id}`) && !resError) router.push("/");
     };
 
     return (
-        <button onClick={handleClick}>
-            Delete Guard {loading && <p>Deleting...</p>}
-        </button>
+        <div className="flex gap-3 items-center">
+            <button onClick={handleClick}>Delete Guard</button>
+            {loading && <Spinner />}
+        </div>
     );
 };
 
@@ -638,9 +656,10 @@ export const DeleteBoardButton = ({ id }: { id: number }) => {
     };
 
     return (
-        <button onClick={handleClick}>
-            Delete Board {loading && <p>Deleting...</p>}
-        </button>
+        <div className="flex gap-3 items-center">
+            <button onClick={handleClick}>Delete Board</button>
+            {loading && <Spinner />}
+        </div>
     );
 };
 
@@ -664,9 +683,10 @@ export const DeleteListButton = ({ id }: { id: number }) => {
     };
 
     return (
-        <button onClick={handleClick}>
-            Delete List {loading && <p>Deleting...</p>}
-        </button>
+        <div className="flex gap-3 items-center">
+            <button onClick={handleClick}>Delete List</button>
+            {loading && <Spinner />}
+        </div>
     );
 };
 
@@ -690,9 +710,10 @@ export const DeleteBugButton = ({ id }: { id: number }) => {
     };
 
     return (
-        <button onClick={handleClick}>
-            Delete Bug {loading && <p>Deleting...</p>}
-        </button>
+        <div className="flex gap-3 items-center">
+            <button onClick={handleClick}>Delete Bug</button>
+            {loading && <Spinner />}
+        </div>
     );
 };
 

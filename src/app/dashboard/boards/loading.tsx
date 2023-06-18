@@ -1,20 +1,7 @@
 const loading = () => {
     const number = 6;
     return (
-        <div className="space-y-6">
-            <div className="space-y-3">
-                <div className="h-4 w-24 bg-gray-300 animate-pulse rounded-md"></div>
-                <div className="h-4 w-40 bg-gray-300 animate-pulse rounded-md"></div>
-            </div>
-            <div className="flex gap-6 mt-6 flex-wrap">
-                {Array(number)
-                    .fill(0)
-                    .map((_, index) => (
-                        <div
-                            key={index}
-                            className="w-48 h-24 bg-gray-300 p-3 rounded-md animate-pulse"></div>
-                    ))}
-            </div>
+        <div>
             <div className="space-y-3">
                 <div className="h-4 w-24 bg-gray-300 animate-pulse rounded-md"></div>
                 <div className="h-4 w-40 bg-gray-300 animate-pulse rounded-md"></div>

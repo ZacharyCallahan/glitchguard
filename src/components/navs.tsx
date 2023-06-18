@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { CreateGuardButton, LoginButton, LogoutButton } from "./buttons";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../lib/auth";
 
-export const GlobalNav = () => {
+export const GlobalNav = async () => {
+    const session = await getServerSession(authOptions);
+    const user = session?.user;
     return (
         <nav className=" bg-white rounded-md shadow-sm mb-6">
             <div className="flex justify-between items-center h-20 m-auto w-5/6">
@@ -29,10 +33,14 @@ export const GlobalNav = () => {
                             className="border-2 border-black"
                         />
                     </li>
-                    <li>
-                        <LoginButton />
-                        <LogoutButton />
-                    </li>
+                    {user && (
+                        <li>
+                            <p>Welcome, {user.name}</p>
+                        </li>
+                    )}
+
+                    <li>{user ? <LogoutButton /> : <LoginButton />}</li>
+
                     <li>
                         <Link href={"/profile"}>Profile</Link>
                     </li>
