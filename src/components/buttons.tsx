@@ -3,7 +3,7 @@ import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ChangeEvent, useState, useTransition } from "react";
+import { ChangeEvent, useEffect, useRef, useState, useTransition } from "react";
 import { PopupForm } from "./forms";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
@@ -23,8 +23,48 @@ import {
 } from "../redux/features/guard-slice";
 import spinner from "./Spinner";
 import Spinner from "./Spinner";
+import { type } from "os";
 type OptionsButtonProps = React.HTMLProps<HTMLDivElement> & {
     children: React.ReactNode;
+};
+type FormErrors = {
+    name?: string;
+    description?: string;
+    priority?: string;
+    status?: string;
+    deadline?: string;
+    color?: string;
+};
+type FormData = {
+    name?: string;
+    description?: string;
+    priority?: string;
+    status?: string;
+    deadline?: string;
+    color?: string;
+};
+const validateForm = (formData: FormData) => {
+    const errors: FormErrors = {};
+    if (formData.name?.length < 3) {
+        errors.name = "Name must be at least 3 characters long";
+    }
+    if (formData.description?.length < 10) {
+        errors.description = "Description must be at least 10 characters long";
+    }
+    if (formData.priority?.length < 1) {
+        errors.priority = "You must select a priority";
+    }
+    if (formData.status?.length < 1) {
+        errors.status = "You must select a status";
+    }
+    if (formData.deadline?.length < 1) {
+        errors.deadline = "You must enter a deadline";
+    }
+    if (formData.color?.length < 1) {
+        errors.color = "You must select a color";
+    }
+
+    return errors;
 };
 export const LoginButton = () => {
     return <button onClick={() => signIn()}>Login</button>;
@@ -45,6 +85,7 @@ export const ProfileButton = () => {
 export const CreateGuardButton = () => {
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
+    const [errors, setErrors] = useState<FormErrors>({});
 
     const dispath = useDispatch<AppDispatch>();
     const [loading, setLoading] = useState(false);
@@ -55,24 +96,29 @@ export const CreateGuardButton = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        const formErrors = validateForm({ name });
+        if (Object.keys(formErrors).length > 0) {
+            setErrors(formErrors);
+            setLoading(false);
+            return;
+        }
         axios
             .post("/api/guard/create", { name })
             .then((response) => {
+                setOpen(false);
                 setLoading(false);
                 dispath(addGuard(response.data));
+                setErrors({});
             })
-            .catch((error) => {
-                console.log(error);
+            .catch((err) => {
+                setErrors(err.data);
                 setLoading(false);
             });
-        setOpen(false);
     };
     return (
         <>
-            <div className="flex gap-3 items-center">
-                <button onClick={handleClick}>Create Guard</button>
-                {loading && <Spinner />}
-            </div>
+            <button onClick={handleClick}>Create Guard</button>
+
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -86,7 +132,15 @@ export const CreateGuardButton = () => {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
-                        <button type="submit">Create</button>
+                        {errors.name && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.name}
+                            </p>
+                        )}
+                        <div className="flex justify-center gap-3 items-center">
+                            <button type="submit">Create</button>
+                            {loading && <Spinner />}
+                        </div>
                     </form>
                 </PopupForm>
             )}
@@ -98,6 +152,8 @@ export const CreateBoardButton = ({ id }: { id: number }) => {
     const [name, setName] = useState("");
     const dispatch = useDispatch<AppDispatch>();
     const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState<FormErrors>({});
+
     const handleClick = () => {
         setOpen(!open);
     };
@@ -105,26 +161,31 @@ export const CreateBoardButton = ({ id }: { id: number }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        const formErrors = validateForm({ name });
+        if (Object.keys(formErrors).length > 0) {
+            setErrors(formErrors);
+            setLoading(false);
+            return;
+        }
         axios
             .post(`/api/guard/board/create/${id}`, { name })
             .then((response) => {
                 setLoading(false);
                 dispatch(addBoard(response.data));
+                setOpen(false);
+                setErrors({});
             })
             .catch((error) => {
-                console.log(error);
                 setLoading(false);
+                setErrors(error.data);
             });
-        setOpen(false);
     };
     return (
         <>
-            <div className="flex gap-3 items-center">
-                <button onClick={handleClick} className="text-xl">
-                    Create Board
-                </button>
-                {loading && <Spinner />}
-            </div>
+            <button onClick={handleClick} className="text-xl">
+                Create Board
+            </button>
+
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -138,7 +199,15 @@ export const CreateBoardButton = ({ id }: { id: number }) => {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
-                        <button type="submit">Create</button>
+                        {errors.name && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.name}
+                            </p>
+                        )}
+                        <div className="flex gap-3 justify-center items-center">
+                            <button type="submit">Create</button>
+                            {loading && <Spinner />}
+                        </div>
                     </form>
                 </PopupForm>
             )}
@@ -157,6 +226,7 @@ export const CreateListButton = ({
     const [name, setName] = useState("");
     const dispatch = useDispatch<AppDispatch>();
     const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState<FormErrors>({});
 
     const handleClick = () => {
         setOpen(!open);
@@ -165,25 +235,31 @@ export const CreateListButton = ({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        const formErrors = validateForm({ name });
+        if (Object.keys(formErrors).length > 0) {
+            setErrors(formErrors);
+            setLoading(false);
+            return;
+        }
+
         axios
             .post(`/api/guard/board/list/create/${boardId}`, { name })
             .then((response) => {
                 setLoading(false);
                 const payload = { ...response.data, guardId };
                 dispatch(addList(payload));
+                setOpen(false);
+                setErrors({});
             })
             .catch((error) => {
-                console.log(error);
                 setLoading(false);
+                setErrors(error.data);
             });
-        setOpen(false);
     };
     return (
         <>
-            <div className="flex gap-3 items-center">
-                <button onClick={handleClick}>Create List</button>
-                {loading && <Spinner />}
-            </div>
+            <button onClick={handleClick}>Create List</button>
+
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -197,7 +273,15 @@ export const CreateListButton = ({
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
-                        <button type="submit">Create</button>
+                        {errors.name && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.name}
+                            </p>
+                        )}
+                        <div className="flex gap-3 justify-center items-center">
+                            <button type="submit">Create</button>
+                            {loading && <Spinner />}
+                        </div>
                     </form>
                 </PopupForm>
             )}
@@ -231,6 +315,7 @@ export const CreateBugButton = ({
         color: "#000",
     });
 
+    const [errors, setErrors] = useState<FormErrors>({});
     const handleClick = () => {
         setOpen(!open);
     };
@@ -238,26 +323,31 @@ export const CreateBugButton = ({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        console.log(formData);
+        const formErrors = validateForm(formData);
+        if (Object.keys(formErrors).length > 0) {
+            setErrors(formErrors);
+            setLoading(false);
+            return;
+        }
+
         axios
             .post(`/api/guard/board/list/bug/create/${listId}`, formData)
             .then((response) => {
                 const payload = { ...response.data, guardId, boardId, listId };
                 dispatch(addBug(payload));
                 setLoading(false);
+                setOpen(false);
+                setErrors({});
             })
             .catch((error) => {
-                console.log(error);
                 setLoading(false);
+                setErrors(error.data);
             });
-        setOpen(false);
     };
     return (
         <>
-            <div className="flex gap-3 items-center">
-                <button onClick={handleClick}>Create Bug</button>
-                {loading && <Spinner />}
-            </div>
+            <button onClick={handleClick}>Create Bug</button>
+
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -276,6 +366,11 @@ export const CreateBugButton = ({
                                 })
                             }
                         />
+                        {errors.name && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.name}
+                            </p>
+                        )}
                         <label htmlFor="description">Description</label>
                         <textarea
                             name="description"
@@ -288,6 +383,11 @@ export const CreateBugButton = ({
                                 })
                             }
                         />
+                        {errors.description && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.description}
+                            </p>
+                        )}
                         <label htmlFor="deadline">Deadline</label>
                         <input
                             type="date"
@@ -301,6 +401,11 @@ export const CreateBugButton = ({
                                 })
                             }
                         />
+                        {errors.deadline && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.deadline}
+                            </p>
+                        )}
                         {/* color wheel */}
                         <label htmlFor="color">Color</label>
                         <input
@@ -315,8 +420,16 @@ export const CreateBugButton = ({
                                 })
                             }
                         />
+                        {errors.color && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.color}
+                            </p>
+                        )}
 
-                        <button type="submit">Create</button>
+                        <div className="flex gap-3 justify-center items-center">
+                            <button type="submit">Create</button>
+                            {loading && <Spinner />}
+                        </div>
                     </form>
                 </PopupForm>
             )}
@@ -329,6 +442,7 @@ export const EditGuardButton = ({ id }: { id: number }) => {
     const [name, setName] = useState("");
     const dispatch = useDispatch<AppDispatch>();
     const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState<FormErrors>({});
 
     const handleClick = () => {
         setOpen(!open);
@@ -337,24 +451,29 @@ export const EditGuardButton = ({ id }: { id: number }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        const formErrors = validateForm({ name });
+        if (Object.keys(formErrors).length > 0) {
+            setErrors(formErrors);
+            setLoading(false);
+            return;
+        }
         axios
             .put(`/api/guard/edit/${id}`, { name })
             .then((response) => {
                 setLoading(false);
                 dispatch(editGuard(response.data));
+                setOpen(false);
+                setErrors({});
             })
             .catch((error) => {
-                console.log(error);
                 setLoading(false);
+                setErrors(error.data);
             });
-        setOpen(false);
     };
     return (
         <>
-            <div className="flex gap-3 items-center">
-                <button onClick={handleClick}>Edit Guard</button>
-                {loading && <Spinner />}
-            </div>
+            <button onClick={handleClick}>Edit Guard</button>
+
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -368,7 +487,15 @@ export const EditGuardButton = ({ id }: { id: number }) => {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
-                        <button type="submit">Edit</button>
+                        {errors.name && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.name}
+                            </p>
+                        )}
+                        <div className="flex gap-3 justify-center  items-center">
+                            <button type="submit">Edit</button>
+                            {loading && <Spinner />}
+                        </div>
                     </form>
                 </PopupForm>
             )}
@@ -381,6 +508,7 @@ export const EditBoardButton = ({ id }: { id: number }) => {
     const [name, setName] = useState("");
     const dispatch = useDispatch<AppDispatch>();
     const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState<FormErrors>({});
 
     const handleClick = () => {
         setOpen(!open);
@@ -389,24 +517,29 @@ export const EditBoardButton = ({ id }: { id: number }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        const formErrors = validateForm({ name });
+        if (Object.keys(formErrors).length > 0) {
+            setErrors(formErrors);
+            setLoading(false);
+            return;
+        }
         axios
             .put(`/api/guard/board/edit/${id}`, { name })
             .then((response) => {
                 setLoading(false);
                 dispatch(editBoard(response.data));
+                setOpen(false);
+                setErrors({});
             })
             .catch((error) => {
-                console.log(error);
                 setLoading(false);
+                setErrors(error.data);
             });
-        setOpen(false);
     };
     return (
         <>
-            <div className="flex gap-3 items-center">
-                <button onClick={handleClick}>Edit Board</button>
-                {loading && <Spinner />}
-            </div>
+            <button onClick={handleClick}>Edit Board</button>
+
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -420,7 +553,15 @@ export const EditBoardButton = ({ id }: { id: number }) => {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
-                        <button type="submit">Edit</button>
+                        {errors.name && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.name}
+                            </p>
+                        )}
+                        <div className="flex gap-3 justify-center items-center">
+                            <button type="submit">Edit</button>
+                            {loading && <Spinner />}
+                        </div>
                     </form>
                 </PopupForm>
             )}
@@ -433,6 +574,7 @@ export const EditListButton = ({ id }: { id: number }) => {
     const [name, setName] = useState("");
     const dispatch = useDispatch<AppDispatch>();
     const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState<FormErrors>({});
 
     const handleClick = () => {
         setOpen(!open);
@@ -441,24 +583,29 @@ export const EditListButton = ({ id }: { id: number }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        const formErrors = validateForm({ name });
+        if (Object.keys(formErrors).length > 0) {
+            setErrors(formErrors);
+            setLoading(false);
+            return;
+        }
         axios
             .put(`/api/guard/board/list/edit/${id}`, { name })
             .then((response) => {
                 dispatch(editList(response.data));
                 setLoading(false);
+                setOpen(false);
+                setErrors({});
             })
             .catch((error) => {
-                console.log(error);
                 setLoading(false);
+                setErrors(error.data);
             });
-        setOpen(false);
     };
     return (
         <>
-            <div className="flex gap-3 items-center">
-                <button onClick={handleClick}>Edit List</button>
-                {loading && <Spinner />}
-            </div>
+            <button onClick={handleClick}>Edit List</button>
+
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -472,7 +619,15 @@ export const EditListButton = ({ id }: { id: number }) => {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
-                        <button type="submit">Edit</button>
+                        {errors.name && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.name}
+                            </p>
+                        )}
+                        <div className="flex gap-3 justify-center items-center">
+                            <button type="submit">Edit</button>
+                            {loading && <Spinner />}
+                        </div>
                     </form>
                 </PopupForm>
             )}
@@ -495,6 +650,7 @@ export const EditBugButton = ({ bug }: { bug: Bug }) => {
     });
     const dispatch = useDispatch<AppDispatch>();
     const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState<FormErrors>({});
 
     const handleClick = () => {
         setOpen(!open);
@@ -511,25 +667,29 @@ export const EditBugButton = ({ bug }: { bug: Bug }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        console.log(formData);
+        const formErrors = validateForm(formData);
+        if (Object.keys(formErrors).length > 0) {
+            setErrors(formErrors);
+            setLoading(false);
+            return;
+        }
         axios
             .put(`/api/guard/board/list/bug/edit/${bug.id}`, formData)
             .then((response) => {
                 dispatch(editBug(response.data));
                 setLoading(false);
+                setOpen(false);
+                setErrors({});
             })
             .catch((error) => {
-                console.log(error);
                 setLoading(false);
+                setErrors(error.data);
             });
-        setOpen(false);
     };
     return (
         <>
-            <div className="flex gap-3 items-center">
-                <button onClick={handleClick}>Edit Bug</button>
-                {loading && <Spinner />}
-            </div>
+            <button onClick={handleClick}>Edit Bug</button>
+
             {open && (
                 <PopupForm onClick={handleClick}>
                     <form
@@ -543,6 +703,11 @@ export const EditBugButton = ({ bug }: { bug: Bug }) => {
                             value={formData.name}
                             onChange={(e) => handleChange(e)}
                         />
+                        {errors.name && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.name}
+                            </p>
+                        )}
                         <label htmlFor="description">Description</label>
                         <textarea
                             name="description"
@@ -550,6 +715,12 @@ export const EditBugButton = ({ bug }: { bug: Bug }) => {
                             value={formData.description}
                             onChange={(e) => handleChange(e)}
                         />
+                        {errors.description && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.description}
+                            </p>
+                        )}
+
                         <label htmlFor="priority">Priority</label>
                         <select
                             name="priority"
@@ -560,6 +731,11 @@ export const EditBugButton = ({ bug }: { bug: Bug }) => {
                             <option value="Medium">Medium</option>
                             <option value="High">High</option>
                         </select>
+                        {errors.priority && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.priority}
+                            </p>
+                        )}
                         <label htmlFor="status">Status</label>
                         <select
                             name="status"
@@ -570,6 +746,11 @@ export const EditBugButton = ({ bug }: { bug: Bug }) => {
                             <option value="In Progress">In Progress</option>
                             <option value="Done">Done</option>
                         </select>
+                        {errors.status && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.status}
+                            </p>
+                        )}
                         <label htmlFor="assignedTo">Assigned To</label>
                         {/* TODO: Change the value and how this is rendered */}
                         <input
@@ -587,6 +768,11 @@ export const EditBugButton = ({ bug }: { bug: Bug }) => {
                             value={formData.deadline}
                             onChange={(e) => handleChange(e)}
                         />
+                        {errors.deadline && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.deadline}
+                            </p>
+                        )}
                         <label htmlFor="color">Color</label>
                         <input
                             type="color"
@@ -595,8 +781,15 @@ export const EditBugButton = ({ bug }: { bug: Bug }) => {
                             value={formData.color}
                             onChange={(e) => handleChange(e)}
                         />
-
-                        <button type="submit">Edit</button>
+                        {errors.color && (
+                            <p className="bg-red-100 text-red-500 rounded-md p-2 mt-5 w-fit">
+                                {errors.color}
+                            </p>
+                        )}
+                        <div className="flex gap-3 justify-center items-center">
+                            <button type="submit">Edit</button>
+                            {loading && <Spinner />}
+                        </div>
                     </form>
                 </PopupForm>
             )}
@@ -690,6 +883,7 @@ export const DeleteListButton = ({ id }: { id: number }) => {
     );
 };
 
+
 export const DeleteBugButton = ({ id }: { id: number }) => {
     const dispatch = useDispatch<AppDispatch>();
     const [loading, setLoading] = useState(false);
@@ -719,14 +913,35 @@ export const DeleteBugButton = ({ id }: { id: number }) => {
 
 export const OptionsButton = ({ children, ...rest }: OptionsButtonProps) => {
     const [open, setOpen] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
+
+    const handleClick = () => {
+        setOpen(!open);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (ref.current && !ref.current.contains(event.target as Node)) {
+                setOpen(false);
+            }
+        };
+
+        document.addEventListener("click", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+    }, [ref]);
 
     return (
-        <div {...rest}>
-            {!open ? (
-                <button onClick={() => setOpen(!open)}>+</button>
-            ) : (
-                <button onClick={() => setOpen(!open)}>-</button>
-            )}
+        <div ref={ref} {...rest}>
+            <button onClick={handleClick}>
+                {open ? (
+                    <i className="fa fa-times" aria-hidden="true"></i>
+                ) : (
+                    <i className="fa fa-bars" aria-hidden="true"></i>
+                )}
+            </button>
 
             {open && (
                 <div className="z-[999] absolute bg-slate-300 p-3 rounded-md flex flex-col items-start">

@@ -35,15 +35,11 @@ export const GlobalNav = async () => {
                     </li>
                     {user && (
                         <li>
-                            <p>Welcome, {user.name}</p>
+                            <Link href={"/profile"}>Welcome, {user.name}</Link>
                         </li>
                     )}
 
                     <li>{user ? <LogoutButton /> : <LoginButton />}</li>
-
-                    <li>
-                        <Link href={"/profile"}>Profile</Link>
-                    </li>
                 </ul>
             </div>
         </nav>

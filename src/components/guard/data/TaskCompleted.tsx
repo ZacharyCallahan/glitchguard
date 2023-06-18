@@ -1,6 +1,6 @@
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-const TaskCompleted = () => {
+const TaskCompleted = ({complete, inComplete}) => {
     ChartJS.register(ArcElement, Tooltip, Legend);
 
 
@@ -10,7 +10,7 @@ const TaskCompleted = () => {
         datasets: [
             {
                 label: "Number of Tasks Completed",
-                data: [12, 19],
+                data: [complete, inComplete],
                 backgroundColor: [
                     "rgba(255, 99, 132, 0.5)",
                     "rgba(54, 162, 235, 0.5)",
@@ -36,7 +36,7 @@ const TaskCompleted = () => {
             100
         ).toFixed(2) + "%";
     return (
-        <div className="w-1/4  bg-white rounded-md p-6 text-center space-y-6 shadow-md">
+        <div className="w-2/4  bg-white rounded-md p-6 text-center space-y-6 shadow-md">
             <div className="space-y-2">
                 <h3 className="text-xl font-medium">Task Completed on Time</h3>
                 <p className="opacity-80 text-sm">

@@ -13,13 +13,19 @@ const Page = ({ params }: ParamsProp) => {
 
     const activeBugs = guard.boards.flatMap((board) =>
         board.lists.flatMap((list) =>
-            list.bugs.filter((bug) => bug.status === "open")
+            list.bugs.filter((bug) => bug.status === "In Progress")
         )
     ).length;
 
     const inactiveBugs = guard.boards.flatMap((board) =>
         board.lists.flatMap((list) =>
-            list.bugs.filter((bug) => bug.status === "closed")
+            list.bugs.filter((bug) => bug.status === "To Do")
+        )
+    ).length;
+
+    const doneBugs = guard.boards.flatMap((board) =>
+        board.lists.flatMap((list) =>
+            list.bugs.filter((bug) => bug.status === "Done")
         )
     ).length;
 
@@ -65,9 +71,7 @@ const Page = ({ params }: ParamsProp) => {
                 />
             </div>
             <div className="flex gap-6">
-                <TaskCompleted />
-                <GuardData guardId={id} />
-                <TaskCompleted />
+                <TaskCompleted complete={doneBugs} inComplete={inactiveBugs + activeBugs}  />
                 <GuardData guardId={id} />
             </div>
         </div>
