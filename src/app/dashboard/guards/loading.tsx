@@ -12,7 +12,7 @@ const loading = () => {
                     .map((_, index) => (
                         <div
                             key={index}
-                            className="w-48 h-24 bg-gray-300 p-3 rounded-md animate-pulse"></div>
+                            className="w-48 h-24 bg-gray-300 rounded-md animate-pulse"></div>
                     ))}
             </div>
         </div>

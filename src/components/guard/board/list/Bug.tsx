@@ -34,7 +34,7 @@ const Bug = ({ bug, guardId, boardId, listId, ...rest }: BugProps) => {
         backgroundColor: bug.color,
     };
     return (
-        <div className="shadow-md w-72" {...rest}>
+        <div className="shadow-md " {...rest}>
             <div style={colorClass} className={`h-10 rounded-t-md`}></div>
             <div className="bg-white h-fit rounded-b-md p-3 space-y-3 text-sm">
                 <div className="flex justify-between items-center border-b-2 pb-3">
@@ -44,7 +44,7 @@ const Bug = ({ bug, guardId, boardId, listId, ...rest }: BugProps) => {
                         <DeleteBugButton id={bug.id} />
                     </OptionsButton>
                 </div>
-                <div className="flex gap-3 border-b-2 pb-3">
+                <div className="flex flex-col border-b-2 pb-3">
                     <h4>Description:</h4>
                     <p>{bug.description}</p>
                 </div>
@@ -68,7 +68,7 @@ const Bug = ({ bug, guardId, boardId, listId, ...rest }: BugProps) => {
                         <p>No assigned users</p>
                     )}
                 </div>
-                <div className="flex gap-3">
+                <div className="flex flex-col">
                     <h4>Due Date:</h4>
                     <p> {formatedDeadline}</p>
                 </div>

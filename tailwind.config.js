@@ -27,7 +27,7 @@ module.exports = {
         },
       },
       gridTemplateColumns: {
-        'fluid': 'repeat(auto-fit, minmax(17rem, 1fr))',
+        'fluid': 'repeat(auto-fit, minmax(16rem, 1fr))',
         'dashboard-fluid': 'repeat(auto-fit, minmax(12rem, 1fr))',
 
       },
