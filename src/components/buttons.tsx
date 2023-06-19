@@ -21,9 +21,7 @@ import {
     editGuard,
     editList,
 } from "../redux/features/guard-slice";
-import spinner from "./Spinner";
 import Spinner from "./Spinner";
-import { type } from "os";
 type OptionsButtonProps = React.HTMLProps<HTMLDivElement> & {
     children: React.ReactNode;
 };
@@ -43,6 +41,7 @@ type FormData = {
     deadline?: string;
     color?: string;
 };
+
 const validateForm = (formData: FormData) => {
     const errors: FormErrors = {};
     if (formData.name?.length < 3) {
@@ -882,7 +881,6 @@ export const DeleteListButton = ({ id }: { id: number }) => {
         </div>
     );
 };
-
 
 export const DeleteBugButton = ({ id }: { id: number }) => {
     const dispatch = useDispatch<AppDispatch>();

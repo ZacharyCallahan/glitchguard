@@ -29,7 +29,7 @@ const GuardNav = ({ id }: { id: number }) => {
             </div>
             <ul className="space-y-3">
                 <li className="flex gap-3 items-center">
-                    <i className="fas fa-user" />
+                    <i className="fa fa-shield fa-lg" aria-hidden="true"></i>
                     <Link
                         className="text-xl"
                         href={`/guard/${guard.id}/settings`}>
@@ -38,7 +38,7 @@ const GuardNav = ({ id }: { id: number }) => {
                 </li>
                 <li>
                     <div className="flex gap-3 items-center">
-                        <i className="fas fa-user" />
+                        <i className="fa fa-user fa-lg" />
                         <h3 className="text-xl">Users</h3>
                     </div>
                     <ul className="pl-9">
@@ -52,7 +52,7 @@ const GuardNav = ({ id }: { id: number }) => {
                 <li>
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <i className="fas fa-user" />
+                            <i className="fa fa-columns fa-lg" aria-hidden="true"></i>
                             <h4 className="text-xl">Boards </h4>
                         </div>
                         <CreateBoardButton id={guard.id} />

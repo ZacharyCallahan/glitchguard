@@ -19,7 +19,7 @@ const Bug = ({ bug, guardId, boardId, listId, ...rest }: BugProps) => {
             .find((guard) => guard.id === guardId)
             .users.find((user) => user.id === bug.createdById)
     );
-    console.log()
+    console.log();
     const formatedDeadline = new Date(
         bug.deadline?.toString()
     ).toLocaleDateString("en-US", {
@@ -34,9 +34,9 @@ const Bug = ({ bug, guardId, boardId, listId, ...rest }: BugProps) => {
         backgroundColor: bug.color,
     };
     return (
-        <div className="shadow-md " {...rest}>
+        <div className="shadow-md h-fit " {...rest}>
             <div style={colorClass} className={`h-10 rounded-t-md`}></div>
-            <div className="bg-white h-fit rounded-b-md p-3 space-y-3 text-sm">
+            <div className="bg-white  rounded-b-md p-3 space-y-3 text-sm">
                 <div className="flex justify-between items-center border-b-2 pb-3">
                     <h3 className="text-md font-semibold">{bug.name}</h3>
                     <OptionsButton>
