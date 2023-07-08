@@ -4,7 +4,6 @@ import { Slogan } from "../components/home/slogan";
 import { Subscription } from "../components/home/subscription";
 import { Teaser } from "../components/home/teaser";
 
-
 export default function Home() {
     return (
         <>

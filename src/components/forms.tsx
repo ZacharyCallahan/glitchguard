@@ -6,10 +6,10 @@ import { LoginButton, RegisterButton } from "./buttons";
 
 import { useDispatch } from "react-redux";
 
-
 import axios from "axios";
 import { AppDispatch } from "../redux/store";
 import { setGuards } from "../redux/features/guard-slice";
+import Link from "next/link";
 
 type PopupFormProps = {
     children: React.ReactNode;
@@ -131,11 +131,11 @@ export const LoginForm = () => {
     );
 };
 
-export const RegisterForm = () => {
+export const RegisterForm = ({ email }) => {
     const [loading, setLoading] = useState(false);
     const [formValues, setFormValues] = useState({
         name: "",
-        email: "",
+        email: email || "",
         password: "",
     });
     const [error, setError] = useState("");
@@ -223,15 +223,18 @@ export const RegisterForm = () => {
 };
 
 export const HomeSignupForm = () => {
+    const [email, setEmail] = useState("");
     return (
-        <form action="" className="text-center">
+        <form className="text-center">
             <input
                 type="email"
                 name="email"
                 id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="border-black border-2"
             />
-            <button type="submit">Sign Up</button>
+            <Link href={`/register?email=${email}`}>Sign Up</Link>
         </form>
     );
 };
