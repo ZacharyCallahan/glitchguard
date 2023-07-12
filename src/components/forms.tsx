@@ -131,7 +131,7 @@ export const LoginForm = () => {
     );
 };
 
-export const RegisterForm = ({ email }) => {
+export const RegisterForm = ({ email }: { email: string }) => {
     const [loading, setLoading] = useState(false);
     const [formValues, setFormValues] = useState({
         name: "",

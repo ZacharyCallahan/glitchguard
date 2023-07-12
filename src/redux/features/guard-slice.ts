@@ -8,10 +8,14 @@ type GuardState = {
     guards: Guard[];
 };
 
+// Define the initial state of the application
 const initialState = {
+    // The value object holds the state of the application
     value: {
+        // The guards array holds all the guards in the application
         guards: [
             {
+                // Each guard has an id, name, users array, boards array, createdAt and updatedAt fields
                 id: 0,
                 name: "",
                 users: [] as User[],
