@@ -8,34 +8,34 @@ import { Footer } from "../components/footer";
 const rubik = Rubik({ subsets: ["cyrillic"] });
 
 export const metadata = {
-    title: "Create Next App",
-    description: "Create Next App with TypeScript",
+  title: "Create Next App",
+  description: "Create Next App with TypeScript",
 };
 
 export default function RootLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    return (
-        <html lang="en">
-            <head>
-                <link
-                    rel="stylesheet"
-                    href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-                />
-            </head>
-            <body className={`${rubik.className} bg-gray-100`}>
-                <NextAuthProvider>
-                    <ReduxProvider>
-                        <DataFetchingProvider>
-                            <GlobalNav />
-                            {children}
-                            <Footer />
-                        </DataFetchingProvider>
-                    </ReduxProvider>
-                </NextAuthProvider>
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+      </head>
+      <body className={`${rubik.className} bg-gray-100`}>
+        <NextAuthProvider>
+          <ReduxProvider>
+            <DataFetchingProvider>
+              <GlobalNav />
+              {children}
+              <Footer />
+            </DataFetchingProvider>
+          </ReduxProvider>
+        </NextAuthProvider>
+      </body>
+    </html>
+  );
 }

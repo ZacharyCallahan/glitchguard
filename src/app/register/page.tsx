@@ -1,6 +1,15 @@
 import { RegisterForm } from "../../components/forms";
 
-export default function RegisterPage({ searchParams }) {
-    const { email } = searchParams;
-    return <RegisterForm email={email} />;
+interface SearchParams {
+  // Define the properties of the searchParams object
+  email: string;
+}
+
+export default function RegisterPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const { email } = searchParams;
+  return <RegisterForm email={email} />;
 }

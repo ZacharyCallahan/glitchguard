@@ -5,19 +5,19 @@ import { Subscription } from "../components/home/subscription";
 import { Teaser } from "../components/home/teaser";
 
 export default function Home() {
-    return (
-        <>
-            <section className="h-screen">
-                <Slogan />
-                <HomeSignupForm />
-                <Teaser />
-            </section>
-            <section className="h-screen">
-                <Slider />
-            </section>
-            <section className="h-screen">
-                <Subscription />
-            </section>
-        </>
-    );
+  return (
+    <>
+      <section className="h-screen">
+        <Slogan />
+        <HomeSignupForm />
+        <Teaser />
+      </section>
+      <section className="h-screen">
+        <Slider />
+      </section>
+      <section className="h-screen">
+        <Subscription />
+      </section>
+    </>
+  );
 }
