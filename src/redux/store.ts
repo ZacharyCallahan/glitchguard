@@ -6,20 +6,20 @@ import { persistReducer, persistStore } from "redux-persist";
 import thunk from "redux-thunk";
 
 const persistConfig = {
-    key: "root",
-    storage: storageSession,
+  key: "root",
+  storage: storageSession,
 };
 
 const rootReducer = combineReducers({
-    guardReducer,
+  guardReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-    reducer: persistedReducer,
-    devTools: process.env.NODE_ENV !== "production",
-    middleware: [thunk],
+  reducer: persistedReducer,
+  devTools: process.env.NODE_ENV !== "production",
+  middleware: [thunk],
 });
 
 export type RootState = ReturnType<typeof store.getState>;
